@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<table>
+  <tr>
+    <td> User </td>
+    <td> Status </td>
+    <td> Start Date </td>
+    <td> End Date </td>
+  </tr>
+  {% for o in obj %}
+  <tr>
+    <td>{{ o.usr|capfirst }} </td>
+    <td>{{ o.status }} </td>
+    <td>{{ o.start_date|date:"M/d/Y" }} </td>
+    <td>{{ o.end_date|date:"M/d/Y" }} </td>
+    {% endfor %}
+</table>
+{% endblock %}
