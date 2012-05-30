@@ -20,9 +20,13 @@
 {% else %}
 
 <p> You can request a leave. <a href="{% url apply %}">(here)</a></p>
-<p> You can check all the leaves data.(here) </p>
+{% if user.is_authenticated %}
+<p> You can logout. <a href="{% url aclogout %}">(here)</a></p>
+{% else %}
+<p> You can login. <a href="{% url aclogin %}">(here)</a></p>
+{% endif %}
 
-
+<p> You can check all the leaves data.<a href="{% url detail %}">(here)</a></p>
 {% endif %}
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" /> 
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.5.min.js" type="text/javascript"></script>

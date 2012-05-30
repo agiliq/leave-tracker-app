@@ -8,6 +8,9 @@ class Leave(models.Model):
     type_of_leave = models.CharField(max_length=20)
     number_fo_days = models.IntegerField(max_length=10)
 
+    def __unicode__(self):
+        return self.type_of_leave
+
     
 class UserProfile(models.Model):
 
@@ -26,5 +29,8 @@ class LeaveApplication(models.Model):
     leave = models.ForeignKey(Leave)
     status = models.BooleanField()
     subject = models.TextField()
+    
+    def __unicode__(self):
+        return "%s %s" %(self.usr, self.start_date)
 
 
