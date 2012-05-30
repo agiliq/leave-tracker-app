@@ -5,6 +5,15 @@ class LeaveApplicationForm(ModelForm):
     
     class Meta:
         model = LeaveApplication
-        exclude = ('status')
+        exclude = ('status', 'usr')
+        
 
+    def save(self, request, commit=True):
+        model = super(LeaveApplicationForm, self).save(commit=False)
 
+        model.usr = request.user.userprofile
+
+        if commit:
+            model.save()
+
+        return model

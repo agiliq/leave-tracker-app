@@ -46,15 +46,10 @@ def personal(request):
     return render(request, "detail.html", {"obj":obj})
 
 @login_required 
-def apply(request, req_id=None):
-
-    req_data = None
-    try:
-        req_data = LeaveApplication.objects.get(id=req_id)
-    except LeaveApplication.DoesNotExist:
-        pass
-    form = LeaveApplicationForm(data=request.POST or None, instance=req_data)
+def apply(request):
+    form = LeaveApplicationForm(data=request.POST or None)
+    
     if form.is_valid():
-        form.save()
+        form.save(request)
         return redirect("/")
     return render(request, 'index.html', {'form':form})
