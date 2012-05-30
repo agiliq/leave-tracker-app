@@ -35,9 +35,14 @@ def aclogin(request):
     else:
         return render(request, "index.html", {"form":form})
 
-
+@login_required
 def detail(request):
     obj = LeaveApplication.objects.all()
+    return render(request, "detail.html", {"obj":obj})
+
+@login_required
+def personal(request):
+    obj = LeaveApplication.objects.filter(usr__user__username=request.user)
     return render(request, "detail.html", {"obj":obj})
 
 @login_required 

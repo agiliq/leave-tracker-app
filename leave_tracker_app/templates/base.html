@@ -6,8 +6,19 @@
 
   <body>
 
+{% if user.is_authenticated %}
+<p> You can request a leave. <a href="{% url apply %}">(here)</a></p>
+<p> You can logout. <a href="{% url aclogout %}">(here)</a></p>
+<p> Browse your leave details <a href="{% url personal %}">(here)</a></p>
+<p> You can check all the leaves data.<a href="{% url detail %}">(here)</a></p>
+
+{% else %}
+<p> You can login. <a href="{% url aclogin %}">(here)</a></p>
+{% endif %}
+
     {% block content %}
     {% endblock content %}
+
 
     <footer>
       &copy 2012

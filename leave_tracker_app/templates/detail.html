@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% if  obj.count %}
 <table>
   <tr>
     <td> User </td>
@@ -16,4 +16,8 @@
     <td>{{ o.end_date|date:"M/d/Y" }} </td>
     {% endfor %}
 </table>
+
+{% else %}
+<p> Sorry {{ user|capfirst }} No Data for you!</p>
+{% endif %}
 {% endblock %}
