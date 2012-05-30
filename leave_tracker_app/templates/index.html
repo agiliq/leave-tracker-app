@@ -1,4 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-<p> This is the index page. </p>
+
+
+{% if form %}
+
+<form method="POST" action""> 
+  {% csrf_token %}
+  <table>
+    {% for field in form %}
+    <div class="fieldWrapper">
+      {{ field.errors }}
+      <p>{{ field.label_tag }} {{ field }}</p>
+    </div>
+    {% endfor %}
+  </table>
+  <input type="submit" value="Submit Form"/>
+</form>
+
+{% else %}
+
+<p> You can request a leave. <a href="{% url apply %}">(here)</a></p>
+<p> You can check all the leaves data.(here) </p>
+
+
+{% endif %}
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" /> 
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.5.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
+<script>
+  $(function() {
+  $( "#id_start_date" ).datepicker();
+  $( "#id_end_date" ).datepicker();
+  });
+</script>
+
 {% endblock content %}
