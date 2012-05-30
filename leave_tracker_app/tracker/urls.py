@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
 
-urlpatterns = patterns('tracker.views', 
+urlpatterns = patterns('leave_tracker_app.tracker.views', 
     url(r'^$', 'index', name='index'),
     )
