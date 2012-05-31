@@ -2,27 +2,72 @@
 
   <head>
     <title> Leave tracking app from/for  agiliq</title>
+    {% block style %}
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel=s"tylesheet">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
+    {% endblock style %}
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+
   </head>
 
   <body>
 
-{% if user.is_authenticated %}
-<p> You can request a leave. <a href="{% url apply %}">(here)</a></p>
-<p> You can logout. <a href="{% url aclogout %}">(here)</a></p>
-<p> Browse your leave details <a href="{% url personal %}">(here)</a></p>
-<p> You can check all the leaves data.<a href="{% url detail %}">(here)</a></p>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <!-- Be sure to leave the brand out there if you want it shown -->
+          <a class="brand" href="/">Agiliq Leave Tracker</a>
+          
+          <!-- Everything you want hidden at 940px or less, place within here -->
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="http://agiliq.com">Agiliq.com</a></li>
+              <li class="divider-vertical"></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url apply %}">Leave Request</a></li>
+              <li><a href="{% url personal %}">Personal Leaves</a></li>
+              <li><a href="{% url detail %}">All the Leaves</a></li>
+              <li><a href="{% url aclogout %}">Logout</a></li>
+              {% else %}
+              <li><a href="{% url aclogin %}">Login</a></li>
+              {% endif %}
+            </ul>
+            <!-- .nav, .navbar-search, .navbar-form, etc -->
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
-{% else %}
-<p> You can login. <a href="{% url aclogin %}">(here)</a></p>
-{% endif %}
 
-    {% block content %}
-    {% endblock content %}
+    <div class="container">
+      {% block content %}
+      {% endblock content %}
+    </div>
 
-
-    <footer>
-      &copy 2012
-    </footer>
+    
+    <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
 
   <body>
 
