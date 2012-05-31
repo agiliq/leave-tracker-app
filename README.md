@@ -19,6 +19,5 @@ leave-tracker-app
 
 
 1. Login via Google Apps.
-4. JavaScript Check to check the dates.
-5. Basic Styling.
+2. JavaScript Check to check the dates.
 

@@ -150,3 +150,6 @@ LOGGING = {
 }
 
 from local_settings import *
+
+LEAVE_CONST = 20
+

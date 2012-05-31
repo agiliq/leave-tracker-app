@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from forms import LeaveApplicationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -7,8 +8,8 @@ from django.contrib.auth.decorators import login_required
 from models import LeaveApplication, UserProfile, Leave
 
 def index(request):
-    
-    return render(request, "index.html", {})
+    current_user = UserProfile.objects.get(user = request.user)
+    return render(request, "index.html", {"current_user":current_user})
 
 
 def aclogout(request):
@@ -51,5 +52,5 @@ def apply(request):
     
     if form.is_valid():
         form.save(request)
-        return redirect("/")
+        return redirect(reverse("personal"))
     return render(request, 'index.html', {'form':form})
