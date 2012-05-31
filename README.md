@@ -18,11 +18,10 @@ leave-tracker-app
 ### Suggestions are welcome. 
 
 
-1. Login via Google Apps
+1. Login via Google Apps.
 2. An automated email to the admin and requester, when a leave process is
 initialized.
 3. An email, when a leave is approved. 
-4. Auto Select the user. 
-5. Basic Styling
+4. JavaScript Check to check the dates.
+5. Basic Styling.
 6. No. of leaves.
-
