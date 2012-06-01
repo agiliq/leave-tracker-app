@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from models import LeaveApplication, UserProfile, Leave
 
 def index(request):
-    current_user = UserProfile.objects.get(user = request.user)
+    current_user = ""
+    if request.user.is_authenticated():
+        current_user = UserProfile.objects.get(user = request.user)
     return render(request, "index.html", {"current_user":current_user})
 
 
