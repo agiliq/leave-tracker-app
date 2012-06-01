@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -7,17 +9,18 @@ from django.contrib.auth.decorators import login_required
 
 from models import LeaveApplication, UserProfile, Leave
 
+
 def index(request):
-    current_user = ""
+    current_user = ''
     if request.user.is_authenticated():
-        current_user = UserProfile.objects.get(user = request.user)
-    return render(request, "index.html", {"current_user":current_user})
+        current_user = UserProfile.objects.get(user=request.user)
+    return render(request, 'index.html', {'current_user': current_user})
 
 
 def aclogout(request):
 
     logout(request)
-    return redirect("/")
+    return redirect('/')
 
 
 def aclogin(request):
@@ -36,23 +39,27 @@ def aclogin(request):
         else:
             return HttpResponse('invalid login')
     else:
-        return render(request, "index.html", {"form":form})
+        return render(request, 'index.html', {'form': form})
+
 
 @login_required
 def detail(request):
     obj = LeaveApplication.objects.all()
-    return render(request, "detail.html", {"obj":obj})
+    return render(request, 'detail.html', {'obj': obj})
+
 
 @login_required
 def personal(request):
-    obj = LeaveApplication.objects.filter(usr__user__username=request.user)
-    return render(request, "detail.html", {"obj":obj})
+    obj = \
+        LeaveApplication.objects.filter(usr__user__username=request.user)
+    return render(request, 'detail.html', {'obj': obj})
 
-@login_required 
+
+@login_required
 def apply(request):
     form = LeaveApplicationForm(data=request.POST or None)
-    
+
     if form.is_valid():
         form.save(request)
-        return redirect(reverse("personal"))
-    return render(request, 'index.html', {'form':form})
+        return redirect(reverse('personal'))
+    return render(request, 'index.html', {'form': form})
