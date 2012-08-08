@@ -3,7 +3,7 @@
 
 {% if user.is_authenticated %}
 
-<h2> Hey {{ current_user.user_display }} Welcome!</h2>
+<h2> Hey {{ current_user }} Welcome!</h2>
 <h3>You have exhausted {{ current_user.leaves_taken }} 
 out of {{ current_user.total_leaves }} leaves.</h3>
 

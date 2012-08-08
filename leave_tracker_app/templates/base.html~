@@ -31,9 +31,9 @@
               <li><a href="{% url apply %}">Leave Request</a></li>
               <li><a href="{% url personal %}">Personal Leaves</a></li>
               <li><a href="{% url detail %}">All the Leaves</a></li>
-              <li><a href="{% url oidlogout %}">Logout</a></li>
+              <li><a href="{% url aclogout %}">Logout</a></li>
               {% else %}
-              <li><a href="{% url openid-login %}">Login</a></li>
+              <li><a href="{% url aclogin %}">Login</a></li>
               {% endif %}
             </ul>
             <!-- .nav, .navbar-search, .navbar-form, etc -->
