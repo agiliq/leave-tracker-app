@@ -3,4 +3,3 @@ testdb
 local_settings.py
 migrations/
 *.*~
-
