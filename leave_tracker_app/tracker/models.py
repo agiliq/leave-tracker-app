@@ -60,6 +60,7 @@ class LeaveApplication(models.Model):
         return '%s %s' % (self.usr, self.start_date)
 
 
+
 def send_approval_mail(sender, **kwargs):
     instance = kwargs['instance']
     recipients = \
@@ -80,7 +81,18 @@ def send_approval_mail(sender, **kwargs):
               fail_silently=False)
 
 
+def modify_leave_count(sender, **kwargs):
+    instance = kwargs['instance']
+    leaves = LeaveApplication.objects.filter(usr=instance.usr, status=True)
+    leave_count = 0
+    for key in leaves:
+        leave_count += (key.end_date - key.start_date).days + 1
+    UserProfile.objects.filter(user=instance.usr).update(leaves_taken=leave_count)
+
+
+
 post_save.connect(send_approval_mail, sender=LeaveApplication)
+post_save.connect(modify_leave_count, sender=LeaveApplication)
 
 def change_username(sender, **kwargs):
     instance = kwargs['instance']
