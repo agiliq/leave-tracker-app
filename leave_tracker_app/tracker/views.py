@@ -47,4 +47,7 @@ def apply(request):
     if form.is_valid():
         form.save(request)
         return redirect(reverse('personal'))
-    return render(request, 'index.html', {'form': form})
+    current_user = ''
+    if request.user.is_authenticated():
+        current_user = UserProfile.objects.get(user=request.user)
+    return render(request, 'index.html', {'form': form, 'current_user': current_user}, )
