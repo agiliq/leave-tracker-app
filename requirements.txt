@@ -1,0 +1,4 @@
+django
+django-openid-auth
+django-authopenid
+south
