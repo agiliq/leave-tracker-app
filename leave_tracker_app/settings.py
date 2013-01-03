@@ -12,6 +12,7 @@ MANAGERS = ADMINS
 PROJECT_DIR=os.path.dirname(__file__)
 
 
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -51,15 +52,16 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_DIR+'/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+
 # Additional locations of static files
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR,'static/'),
+    #os.path.join(PROJECT_DIR,'static/'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -135,7 +137,8 @@ OPENID_UPDATE_DETAILS_FROM_SREG = True
 
 # If set, always use this as the identity URL rather than asking the
 # user.  This only makes sense if it is a server URL.
-OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/site-xrds?hd=agiliq.com'
+#OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/site-xrds?hd=agiliq.com'
+OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/id'
 
 # Tell django.contrib.auth to use the OpenID signin URLs.
 LOGIN_URL = '/openid/login/'
