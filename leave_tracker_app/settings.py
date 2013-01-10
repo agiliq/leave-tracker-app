@@ -137,8 +137,7 @@ OPENID_UPDATE_DETAILS_FROM_SREG = True
 
 # If set, always use this as the identity URL rather than asking the
 # user.  This only makes sense if it is a server URL.
-#OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/site-xrds?hd=agiliq.com'
-OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/id'
+OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/site-xrds?hd=agiliq.com'
 
 # Tell django.contrib.auth to use the OpenID signin URLs.
 LOGIN_URL = '/openid/login/'
