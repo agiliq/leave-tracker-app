@@ -1,8 +1,7 @@
 # Django settings for leave_tracker_app project.
 import os
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
 
 ADMINS = (
     ('Bhaskar', 'bhaskar@agiliq.com'),
@@ -180,6 +179,7 @@ LOGGING = {
 }
 
 from local_settings import *
+TEMPLATE_DEBUG = DEBUG
 
 LEAVE_CONST = 20
 
