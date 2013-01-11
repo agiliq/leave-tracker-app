@@ -13,6 +13,7 @@ MANAGERS = ADMINS
 PROJECT_DIR=os.path.dirname(__file__)
 
 SERVER_EMAIL = 'leaves@agiliq.com'
+DEFAULT_FROM_EMAIL = 'leaves@agiliq.com'
 
 
 
