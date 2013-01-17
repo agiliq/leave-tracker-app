@@ -74,11 +74,14 @@ def send_approval_mail(sender, **kwargs):
         % (instance.start_date, instance.end_date, instance.subject)
     if kwargs['created']:
         subject = 'Leave Created by %s' % instance.usr.user
+        recipients.append(instance.usr.user.email)
+        send_mail(subject, email_body, 'leaves@agiliq.com', recipients,
+                fail_silently=False)
     if instance.status == True:
         subject = 'Leave Approved for %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
-    send_mail(subject, email_body, 'leave@agiliq.com', recipients,
-              fail_silently=False)
+        send_mail(subject, email_body, 'leaves@agiliq.com', recipients,
+                fail_silently=False)
 
 
 def modify_leave_count(sender, **kwargs):
