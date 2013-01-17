@@ -10,7 +10,7 @@
   </tr>
   {% for o in obj %}
   <tr>
-    <td>{{ current_user.user_display|capfirst }} </td>
+    <td>{{ o.usr.user_display|capfirst }} </td>
     <td>{{ o.status }} </td>
     <td>{{ o.start_date|date:"M/d/Y" }} </td>
     <td>{{ o.end_date|date:"M/d/Y" }} </td>
