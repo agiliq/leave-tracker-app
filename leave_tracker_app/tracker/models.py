@@ -77,7 +77,7 @@ def send_approval_mail(sender, **kwargs):
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, 'leaves@agiliq.com', recipients,
                 fail_silently=False)
-    if instance.status == True:
+    if instance.status:
         subject = 'Leave Approved for %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, 'leaves@agiliq.com', recipients,
