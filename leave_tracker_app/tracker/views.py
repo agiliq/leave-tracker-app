@@ -35,7 +35,7 @@ def detail(request):
 def personal(request):
     current_user = ''
     obj = \
-        LeaveApplication.objects.filter(usr__user__username=request.user)
+        LeaveApplication.objects.filter(usr__user=request.user)
     current_user = UserProfile.objects.get(user=request.user)
     return render(request, 'detail.html', {'obj': obj, 'current_user': current_user})
 
