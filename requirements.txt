@@ -1,6 +1,5 @@
 django
 django-openid-auth
 -e git+https://github.com/adieu/python-openid#egg=python-openid
-django-authopenid
 south
 gunicorn
