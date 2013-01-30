@@ -1,13 +1,19 @@
 # Django settings for leave_tracker_app project.
+import os
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Bhaskar', 'bhaskar@agiliq.com'),
+    ('Shabda Raaj', 'shabda@agiliq.com'),
 )
 
 MANAGERS = ADMINS
+PROJECT_DIR=os.path.dirname(__file__)
+
+SERVER_EMAIL = 'leaves@agiliq.com'
+DEFAULT_FROM_EMAIL = 'leaves@agiliq.com'
+
 
 
 # Local time zone for this installation. Choices can be found here:
@@ -49,14 +55,16 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_DIR+'/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+
 # Additional locations of static files
 STATICFILES_DIRS = (
+    #os.path.join(PROJECT_DIR,'static/'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -96,6 +104,7 @@ ROOT_URLCONF = 'leave_tracker_app.urls'
 WSGI_APPLICATION = 'leave_tracker_app.wsgi.application'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_DIR, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -108,11 +117,37 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leave_tracker_app.tracker',
+    'south',
+    'django_openid_auth',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+AUTHENTICATION_BACKENDS = (
+    'django_openid_auth.auth.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Should users be created when new OpenIDs are used to log in?
+OPENID_CREATE_USERS = True
+
+# When logging in again, should we overwrite user details based on
+# data received via Simple Registration?
+OPENID_UPDATE_DETAILS_FROM_SREG = True
+
+# If set, always use this as the identity URL rather than asking the
+# user.  This only makes sense if it is a server URL.
+OPENID_SSO_SERVER_URL = 'https://google.com/accounts/o8/site-xrds?hd=agiliq.com'
+
+# Tell django.contrib.auth to use the OpenID signin URLs.
+LOGIN_URL = '/openid/login/'
+LOGIN_REDIRECT_URL = '/'
+
+# Should django_auth_openid be used to sign into the admin interface?
+OPENID_USE_AS_ADMIN_LOGIN = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -144,3 +179,7 @@ LOGGING = {
 }
 
 from local_settings import *
+TEMPLATE_DEBUG = DEBUG
+
+LEAVE_CONST = 20
+

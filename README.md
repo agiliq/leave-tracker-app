@@ -19,3 +19,6 @@ and the remaining days.
 ### Suggestions are welcome. 
 
 
+1. Login via Google Apps.
+2. JavaScript Check to check the dates.
+

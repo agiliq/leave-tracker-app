@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+{% if  obj.count %}
+<table class="table table-striped table-bordered">
+  <tr>
+    <th> User </th>
+    <th> Status </th>
+    <th> Start Date </th>
+    <th> End Date </th>
+  </tr>
+  {% for o in obj %}
+  <tr>
+    <td>{{ o.usr.user_display|capfirst }} </td>
+    <td>{{ o.status }} </td>
+    <td>{{ o.start_date|date:"M/d/Y" }} </td>
+    <td>{{ o.end_date|date:"M/d/Y" }} </td>
+    {% endfor %}
+</table>
+
+{% else %}
+<p> Sorry {{ current_user.user_display|capfirst }} No Data for you!</p>
+{% endif %}
+{% endblock %}
