@@ -1,6 +1,8 @@
 leave-tracker-app
 =================
 
+[![Build Status](https://travis-ci.org/agiliq/leave-tracker-app.png?branch=master)](https://travis-ci.org/agiliq/leave-tracker-app)
+
 ### What is it?
 
 Leave tracking system. All users can request leaves.
