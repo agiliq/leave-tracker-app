@@ -3,9 +3,10 @@ leave-tracker-app
 
 ### What is it?
 
-It is an automated leave granting/tracking system in an org. 
+Leave tracking system. All users can request leaves.
+Admins can grant leaves.
 
-###Features include:
+###Features
 
 1. There is a super admin to whom all the applications are
 directed, all leave data is visible to him. 
@@ -15,10 +16,8 @@ and the remaining days.
 4. It has a leave calendar visible for the team. 
 5. Each user can view his and others' leaves. 
 6. More features as it grows. 
+7. Login via Google Apps.
 
-### Suggestions are welcome. 
+### Installation
 
-
-1. Login via Google Apps.
-2. JavaScript Check to check the dates.
-
+1. pip install -r requirements.txt
