@@ -24,7 +24,7 @@ def oidlogout(request):
 
 
 @login_required
-def detail(request):
+def all(request):
     current_user = ''
     obj = LeaveApplication.objects.all()
     current_user = UserProfile.objects.get(user=request.user)
