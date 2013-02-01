@@ -25,7 +25,7 @@ class LeaveApplicationForm(ModelForm):
     def clean_end_date(self):
         start_date = self.cleaned_data['start_date']
         end_date = self.cleaned_data['end_date']
-        if end_date > start_date:
+        if end_date >= start_date:
             return end_date
         else:
             raise forms.ValidationError("'End Date' should be after 'Start Date' .")
