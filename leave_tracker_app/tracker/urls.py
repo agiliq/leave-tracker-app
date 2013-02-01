@@ -7,4 +7,6 @@ urlpatterns = patterns('leave_tracker_app.tracker.views',
     url(r'^personal/$', 'personal', name='personal'),
     url(r'^openid/', include('django_openid_auth.urls')),
     url(r'^openid/logout/$', 'oidlogout', name='oidlogout'),                       
+    url(r'^get_prev_leaves/', 'get_prev_leaves', name='get_prev_leaves'),
+    
     )

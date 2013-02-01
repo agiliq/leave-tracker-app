@@ -2,7 +2,7 @@
 <html>
   <head>
     <title> Leave tracking app from/for  agiliq</title>
-    {% block style %}
+
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel=s"tylesheet">
     <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.ico">
@@ -10,6 +10,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
     <link rel='stylesheet' href='{{ STATIC_URL }}css/style.css' type='text/css' />
+    {% block style %}
     {% endblock style %}
     <script src="{{ STATIC_URL }}js/jquery.js"></script>
 
@@ -53,6 +54,9 @@
     
     
     <script src="{{ STATIC_URL }}js/script.js" ></script>
+    {% block script %}
+
+    {% endblock %}
 
   <body>
 
