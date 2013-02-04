@@ -6,11 +6,14 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.test import Client
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
+class TestViewsBasic(TestCase):
+    def test_index(self):
         """
-        Tests that 1 + 1 always equals 2.
+        Test the homepage
         """
-        self.assertEqual(1 + 1, 2)
+        c = Client()
+        response = c.get("/")
+        self.assertEqual(200, response.status_code)
