@@ -1,7 +1,5 @@
 import os
 
-
-
 ADMINS = (
     ('Bhaskar', 'bhaskar@agiliq.com'),
     ('Shabda Raaj', 'shabda@agiliq.com'),
@@ -119,10 +117,7 @@ INSTALLED_APPS = (
     'leave_tracker',
     'south',
     'django_openid_auth',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
 
 AUTHENTICATION_BACKENDS = (
