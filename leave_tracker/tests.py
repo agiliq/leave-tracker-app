@@ -95,6 +95,7 @@ class TestModel(TestCase):
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue(str(leave.num_days) in last_email.body)
+        self.assertTrue("requested" in last_email.body)
 
     def test_leave_application_num_days(self):
         today=datetime.date.today()
@@ -125,12 +126,17 @@ class TestModel(TestCase):
                 "leave_category": self.category, "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
             }
-        leave_application = LeaveApplication.objects.create(**data)
+        leave = LeaveApplication.objects.create(**data)
         old_count = len(mail.outbox)
-        leave_application.status = True
-        leave_application.save()
+        leave.status = True
+        leave.save()
         self.assertEqual(mail.outbox[-1].from_email, settings.DEFAULT_FROM_EMAIL)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
+        last_email = mail.outbox[-1]
+        self.assertTrue(self.user.first_name in last_email.body)
+        self.assertTrue(str(leave.num_days) in last_email.body)
+        self.assertTrue("approved" in last_email.body)
+
 
     def test_admin_approve_multiple(self):
         "The approve multiple admin action"

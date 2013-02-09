@@ -81,14 +81,17 @@ def send_approval_mail(sender, **kwargs):
         list(User.objects.filter(is_superuser=True).values_list('email'
              , flat=True))
     subject = None
-    email_body = render_to_string('leave_tracker/leave_created.txt',
-                    {"leave": instance})
+    
     if kwargs['created']:
+        email_body = render_to_string('leave_tracker/leave_created.txt',
+                    {"leave": instance})
         subject = 'Leave Created by %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
                 fail_silently=False)
     if instance.status:
+        email_body = render_to_string('leave_tracker/leave_approved.txt',
+                    {"leave": instance})
         subject = 'Leave Approved for %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
