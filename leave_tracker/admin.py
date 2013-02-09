@@ -2,8 +2,11 @@ from django.contrib import admin
 
 from .models import LeaveCategory, UserProfile, LeaveApplication
 
+
 def approve_multiple(modeladmin, request, queryset):
-        queryset.update(status=True)
+    for leave in queryset:
+        leave.status=True
+        leave.save()
 
 approve_multiple.short_description = "Approve All"
 
@@ -12,10 +15,6 @@ class LeaveAppAdmin(admin.ModelAdmin):
                     'status', 'subject']
     actions = [approve_multiple]
 
-def approve_multiple(modeladmin, request, queryset):
-        for leave in queryset:
-            leave.status=True
-            leave.save()
 
 
 admin.site.register(LeaveCategory)
