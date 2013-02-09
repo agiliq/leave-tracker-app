@@ -1,5 +1,0 @@
-.description {display: none; position: absolute; width:350px; border: 3px solid #BBB; border-radius: 10px; background-color: #615757; color: white; padding: 15px; left: 35%; top: 15%; font-weight: bold; }
-
-td:last-child:hover > .description {display: block; }
-
-td:first-child {cursor: pointer; }
