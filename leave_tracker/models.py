@@ -8,10 +8,13 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-class Leave(models.Model):
+class LeaveCategory(models.Model):
 
     type_of_leave = models.CharField(max_length=20)
-    number_fo_days = models.IntegerField(max_length=10)
+    number_of_days = models.IntegerField(max_length=10)
+
+    class Meta:
+        verbose_name_plural = "Leave Categories"
 
     def __unicode__(self):
         return self.type_of_leave
@@ -52,7 +55,7 @@ class LeaveApplication(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     usr = models.ForeignKey(UserProfile)
-    leave = models.ForeignKey(Leave)
+    leave_category = models.ForeignKey("LeaveCategory")
     status = models.BooleanField()
     subject = models.TextField()
 
