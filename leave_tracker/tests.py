@@ -12,15 +12,16 @@ from .admin import approve_multiple
 
 class TestViewsBasic(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="foo", email="foo@example.com",
-                    password="bar")
+        self.user = User.objects.create_user(username="foo",
+                                             email="foo@example.com",
+                                             password="bar")
         self.c = Client()
 
     def test_index(self):
         """
         Homepage returns a http 200 and has the basic text
         """
-        
+
         response = self.c.get("/")
         self.assertEqual(200, response.status_code)
         self.assertContains(response, "Login")
@@ -36,17 +37,19 @@ class TestViewsBasic(TestCase):
 
     def test_apply(self):
         self.c.login(username="foo", password="bar")
-        cat = LeaveCategory.objects.create(type_of_leave="Personal", 
-                        number_of_days=10)
+        cat = LeaveCategory.objects.create(type_of_leave="Personal",
+                                           number_of_days=10)
         data = {"start_date": "02/07/2013", "end_date": "02/07/2013",
                 "leave_category": cat.pk, "subject": "Going to Timbaktu"
-            }
+                }
         self.c.post("/apply/", data)
-        staff_count=User.objects.filter(is_staff=True).count()
+        staff_count = User.objects.filter(is_staff=True).count()
         self.assertEqual(LeaveApplication.objects.get(subject=
-                        "Going to Timbaktu").leave_category, cat)
-        self.assertEqual(len(mail.outbox), staff_count+1)#Mail goes to all staff, and user foo
-        self.assertEqual(mail.outbox[-1].from_email, settings.DEFAULT_FROM_EMAIL)
+                         "Going to Timbaktu").leave_category, cat)
+        #Mail goes to all staff, and user foo
+        self.assertEqual(len(mail.outbox), staff_count+1)
+        self.assertEqual(mail.outbox[-1].from_email,
+                         settings.DEFAULT_FROM_EMAIL)
 
     def test_list_page(self):
         "All the leaves list page"
@@ -65,94 +68,91 @@ class TestViewsBasic(TestCase):
         self.assertEqual(200, response.status_code)
 
 
-
-
-
-
 class TestModel(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="foo", email="foo@example.com",
-                    password="bar",)
+        self.user = User.objects.create_user(username="foo",
+                                             email="foo@example.com",
+                                             password="bar",)
         self.user.first_name = "Luke"
         self.user.save()
-        self.category = LeaveCategory.objects.create(type_of_leave="Personal", 
-                        number_of_days=10)
+        self.category = LeaveCategory.objects.create(type_of_leave="Personal",
+                                                     number_of_days=10)
         self.profile = UserProfile.objects.get(user=self.user)
-        self.staff_count=User.objects.filter(is_staff=True).count()
-    
+        self.staff_count = User.objects.filter(is_staff=True).count()
+
     def test_create_leave_application(self):
-        today=datetime.date.today()
-        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        today = datetime.date.today()
+        tomorrow = datetime.date.today()+datetime.timedelta(1)
         data = {"start_date": today, "end_date": tomorrow,
-                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "leave_category": self.category, "subject":
+                "Going to Timbaktu",
                 "usr": self.profile, "status": False
-            }
+                }
         leave = LeaveApplication.objects.create(**data)
-        
+
+        #Mail goes to all staff, and user foo
         self.assertEqual(len(mail.outbox),
-                self.staff_count+1)#Mail goes to all staff, and user foo
+                         self.staff_count+1)
+
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("requested" in last_email.body)
 
     def test_leave_application_num_days(self):
-        today=datetime.date.today()
-        till=datetime.date.today()+datetime.timedelta(5)
+        today = datetime.date.today()
+        till = datetime.date.today()+datetime.timedelta(5)
         data = {"start_date": today, "end_date": till,
-                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "leave_category": self.category, "subject":
+                "Going to Timbaktu",
                 "usr": self.profile, "status": False
-            }
+                }
         leave = LeaveApplication.objects.create(**data)
-        self.assertEqual(leave.num_days, 5+1)#Dates are both inclusive
-        till=datetime.date.today()+datetime.timedelta(10)
+        #Dates are both inclusive
+        self.assertEqual(leave.num_days, 5+1)
+        till = datetime.date.today()+datetime.timedelta(10)
         data = {"start_date": today, "end_date": till,
-                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "leave_category": self.category, "subject":
+                "Going to Timbaktu",
                 "usr": self.profile, "status": False
-            }
+                }
         leave = LeaveApplication.objects.create(**data)
-        self.assertEqual(leave.num_days, 10+1)#Dates are both inclusive
-        
-
-
-        
-
+        #Dates are both inclusive
+        self.assertEqual(leave.num_days, 10+1)
 
     def test_leave_applications_approval(self):
-        today=datetime.date.today()
-        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        today = datetime.date.today()
+        tomorrow = datetime.date.today()+datetime.timedelta(1)
         data = {"start_date": today, "end_date": tomorrow,
-                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "leave_category": self.category,
+                "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
-            }
+                }
         leave = LeaveApplication.objects.create(**data)
         old_count = len(mail.outbox)
         leave.status = True
         leave.save()
-        self.assertEqual(mail.outbox[-1].from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertEqual(mail.outbox[-1].from_email,
+                         settings.DEFAULT_FROM_EMAIL)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("approved" in last_email.body)
 
-
     def test_admin_approve_multiple(self):
         "The approve multiple admin action"
-        today=datetime.date.today()
-        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        today = datetime.date.today()
+        tomorrow = datetime.date.today()+datetime.timedelta(1)
         data = {"start_date": today, "end_date": tomorrow,
-                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "leave_category": self.category,
+                "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
-            }
+                }
         LeaveApplication.objects.create(**data)
         queryset = LeaveApplication.objects.filter(status=False)
         old_count = len(mail.outbox)
         approve_multiple(None, None, queryset)
-        self.assertEqual(LeaveApplication.objects.filter(status=False).count(), 0)
+        self.assertEqual(LeaveApplication.objects.filter
+                         (status=False).count(), 0)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
-
-        
-
-
-

@@ -29,8 +29,5 @@ class LeaveApplicationForm(ModelForm):
         if end_date >= start_date:
             return end_date
         else:
-            raise forms.ValidationError("'End Date' should be after 'Start Date' .")
-
-        
-
-
+            raise forms.ValidationError("'End Date' should be "
+                                        "after 'Start Date' .")

@@ -5,16 +5,16 @@ from .models import LeaveCategory, UserProfile, LeaveApplication
 
 def approve_multiple(modeladmin, request, queryset):
     for leave in queryset:
-        leave.status=True
+        leave.status = True
         leave.save()
 
 approve_multiple.short_description = "Approve All"
 
+
 class LeaveAppAdmin(admin.ModelAdmin):
-    list_display = ['start_date', 'end_date', 'usr', 'leave_category', 
+    list_display = ['start_date', 'end_date', 'usr', 'leave_category',
                     'status', 'subject']
     actions = [approve_multiple]
-
 
 
 admin.site.register(LeaveCategory)
