@@ -81,7 +81,6 @@ class TestModel(TestCase):
         self.staff_count=User.objects.filter(is_staff=True).count()
     
     def test_create_leave_application(self):
-        
         import datetime
         today=datetime.date.today()
         tomorrow=datetime.date.today()+datetime.timedelta(1)
@@ -89,12 +88,34 @@ class TestModel(TestCase):
                 "leave_category": self.category, "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
             }
-        LeaveApplication.objects.create(**data)
+        leave = LeaveApplication.objects.create(**data)
         
         self.assertEqual(len(mail.outbox),
                 self.staff_count+1)#Mail goes to all staff, and user foo
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
+        self.assertTrue(str(leave.num_days) in last_email.body)
+
+    def test_leave_application_num_days(self):
+        today=datetime.date.today()
+        till=datetime.date.today()+datetime.timedelta(5)
+        data = {"start_date": today, "end_date": till,
+                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "usr": self.profile, "status": False
+            }
+        leave = LeaveApplication.objects.create(**data)
+        self.assertEqual(leave.num_days, 5+1)#Dates are both inclusive
+        till=datetime.date.today()+datetime.timedelta(10)
+        data = {"start_date": today, "end_date": till,
+                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "usr": self.profile, "status": False
+            }
+        leave = LeaveApplication.objects.create(**data)
+        self.assertEqual(leave.num_days, 10+1)#Dates are both inclusive
+        
+
+
+        
 
 
     def test_leave_applications_approval(self):
