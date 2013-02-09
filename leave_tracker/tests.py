@@ -1,6 +1,9 @@
 from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
+from django.core import mail
+
+from .models import LeaveCategory, LeaveApplication, UserProfile
 
 
 class TestViewsBasic(TestCase):
@@ -27,6 +30,19 @@ class TestViewsBasic(TestCase):
         response = self.c.get("/apply/")
         self.assertEqual(200, response.status_code)
 
+    def test_apply(self):
+        self.c.login(username="foo", password="bar")
+        cat = LeaveCategory.objects.create(type_of_leave="Personal", 
+                        number_of_days=10)
+        data = {"start_date": "02/07/2013", "end_date": "02/07/2013",
+                "leave_category": cat.pk, "subject": "Going to Timbaktu"
+            }
+        self.c.post("/apply/", data)
+        staff_count=User.objects.filter(is_staff=True).count()
+        self.assertEqual(LeaveApplication.objects.get(subject=
+                        "Going to Timbaktu").leave_category, cat)
+        self.assertEqual(len(mail.outbox), staff_count+1)#Mail goes to all staff, and user foo
+
     def test_list_page(self):
         "All the leaves list page"
         response = self.c.get("/all/")
@@ -49,4 +65,40 @@ class TestViewsBasic(TestCase):
 
 
 class TestModel(TestCase):
-    pass
+    def setUp(self):
+        self.user = User.objects.create_user(username="foo", email="foo@example.com",
+                    password="bar")
+        self.category = LeaveCategory.objects.create(type_of_leave="Personal", 
+                        number_of_days=10)
+        self.profile = UserProfile.objects.get(user=self.user)
+        self.staff_count=User.objects.filter(is_staff=True).count()
+    
+    def test_create_leave_application(self):
+        
+        import datetime
+        today=datetime.date.today()
+        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        data = {"start_date": today, "end_date": tomorrow,
+                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "usr": self.profile, "status": False
+            }
+        LeaveApplication.objects.create(**data)
+        
+        self.assertEqual(len(mail.outbox),
+                self.staff_count+1)#Mail goes to all staff, and user foo
+
+    def test_leave_applications_approval(self):
+        import datetime
+        today=datetime.date.today()
+        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        data = {"start_date": today, "end_date": tomorrow,
+                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "usr": self.profile, "status": False
+            }
+        leave_application = LeaveApplication.objects.create(**data)
+        old_count = len(mail.outbox)
+        leave_application.status = True
+        leave_application.save()
+        self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
+
+
