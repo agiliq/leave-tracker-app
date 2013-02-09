@@ -116,7 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'leave_tracker_app.tracker',
+    'tracker',
     'south',
     'django_openid_auth',
     # Uncomment the next line to enable the admin:
