@@ -98,6 +98,7 @@ class TestModel(TestCase):
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("requested" in last_email.body)
+        self.assertEqual(leave.status_display, "Requested")
 
     def test_leave_application_num_days(self):
         today = datetime.date.today()
@@ -139,6 +140,7 @@ class TestModel(TestCase):
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("approved" in last_email.body)
+        self.assertEqual(leave.status_display, "Approved")
 
     def test_admin_approve_multiple(self):
         "The approve multiple admin action"

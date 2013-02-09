@@ -11,19 +11,23 @@
     <th> Status </th>
     <th> Start Date </th>
     <th> End Date </th>
+    <th>Leave Duration</th>
   </tr>
   {% for o in obj %}
   <tr>
       <td class='username' uid='{{ o.usr.id }}' > {{ o.usr.user_display|capfirst }} </td>
-    <td>{{ o.status }} </td>
+    <td>{{ o.status_display }} </td>
     <td>{{ o.start_date|date:"M/d/Y" }}
 
     </td>
-    <td>{{ o.end_date|date:"M/d/Y" }} 
+    <td>{{ o.end_date|date:"M/d/Y" }}
         <div class='description'>
            Description:  {{ o.subject }}
         </div>
-    
+
+    </td>
+    <td>
+      {{ o.num_days }} Days
     </td>
     {% endfor %}
 </table>
@@ -37,7 +41,7 @@
     </div>
 
     <div class='modal-body'>
-        
+
     </div>
     <div class='modal-footer'>
         <a href='#' class='btn' data-dismiss='modal'  >Close</a>

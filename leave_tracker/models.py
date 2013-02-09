@@ -71,6 +71,12 @@ class LeaveApplication(models.Model):
         "Number of days in this leave application"
         return (self.end_date-self.start_date).days+1
 
+    @property
+    def status_display(self):
+        if self.status:
+            return "Approved"
+        else:
+            return "Requested"
 
 def send_approval_mail(sender, **kwargs):
     instance = kwargs['instance']

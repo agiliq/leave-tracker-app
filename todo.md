@@ -1,11 +1,12 @@
 * Better test coverage
 * On the day of the leave, LeaveTracker should send a email to the Admin and User with the details of the leave.
 * Make the all leaves pages available to superuser only.
-* Show approved/unapproved in the status UI.
+
+* Add client side validations via Django parsley
 
 Done
 
-
+* Show approved/unapproved in the status UI.
 * Make links more prominent on the homepage
 * Fix pep8 warnings
 * Fix pylint warnings
