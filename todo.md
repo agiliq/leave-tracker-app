@@ -1,8 +1,9 @@
 * Better test coverage
-* Format the outgoing emails better. 
+* On the day of the leave, LeaveTracker should send a email to the Admin and User with the details of the leave.
 
 Done
 
+* Format the outgoing emails better. 
 * Write admin action to approve multiple 
 * Move templates for the app inside the app, and namespace the templates
 * Rename Leave -> LeaveCategory

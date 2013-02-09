@@ -81,7 +81,6 @@ class TestModel(TestCase):
         self.staff_count=User.objects.filter(is_staff=True).count()
     
     def test_create_leave_application(self):
-        import datetime
         today=datetime.date.today()
         tomorrow=datetime.date.today()+datetime.timedelta(1)
         data = {"start_date": today, "end_date": tomorrow,
@@ -146,7 +145,7 @@ class TestModel(TestCase):
                 "leave_category": self.category, "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
             }
-        leave_application = LeaveApplication.objects.create(**data)
+        LeaveApplication.objects.create(**data)
         queryset = LeaveApplication.objects.filter(status=False)
         old_count = len(mail.outbox)
         approve_multiple(None, None, queryset)
