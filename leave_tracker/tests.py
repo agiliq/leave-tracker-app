@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
 from django.core import mail
+from django.conf import settings
 
 import datetime
 
@@ -45,6 +46,7 @@ class TestViewsBasic(TestCase):
         self.assertEqual(LeaveApplication.objects.get(subject=
                         "Going to Timbaktu").leave_category, cat)
         self.assertEqual(len(mail.outbox), staff_count+1)#Mail goes to all staff, and user foo
+        self.assertEqual(mail.outbox[-1].from_email, settings.DEFAULT_FROM_EMAIL)
 
     def test_list_page(self):
         "All the leaves list page"
@@ -101,6 +103,7 @@ class TestModel(TestCase):
         old_count = len(mail.outbox)
         leave_application.status = True
         leave_application.save()
+        self.assertEqual(mail.outbox[-1].from_email, settings.DEFAULT_FROM_EMAIL)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
 
     def test_admin_approve_multiple(self):
