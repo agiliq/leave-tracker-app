@@ -72,29 +72,27 @@ class LeaveApplication(models.Model):
         return (self.end_date-self.start_date).days+1
 
 
-
-
 def send_approval_mail(sender, **kwargs):
     instance = kwargs['instance']
     recipients = \
-        list(User.objects.filter(is_superuser=True).values_list('email'
-             , flat=True))
+        list(User.objects.filter(is_superuser=True).
+             values_list('email', flat=True))
     subject = None
-    
+
     if kwargs['created']:
         email_body = render_to_string('leave_tracker/leave_created.txt',
-                    {"leave": instance})
+                                      {"leave": instance})
         subject = 'Leave Created by %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
-                fail_silently=False)
+                  fail_silently=False)
     if instance.status:
         email_body = render_to_string('leave_tracker/leave_approved.txt',
-                    {"leave": instance})
+                                      {"leave": instance})
         subject = 'Leave Approved for %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
         send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
-                fail_silently=False)
+                  fail_silently=False)
 
 
 def modify_leave_count(sender, **kwargs):
@@ -103,12 +101,13 @@ def modify_leave_count(sender, **kwargs):
     leave_count = 0
     for key in leaves:
         leave_count += (key.end_date - key.start_date).days + 1
-    UserProfile.objects.filter(user=instance.usr).update(leaves_taken=leave_count)
-
+    UserProfile.objects.filter(user=instance.usr).\
+        update(leaves_taken=leave_count)
 
 
 post_save.connect(send_approval_mail, sender=LeaveApplication)
 post_save.connect(modify_leave_count, sender=LeaveApplication)
+
 
 def change_username(sender, **kwargs):
     instance = kwargs['instance']
