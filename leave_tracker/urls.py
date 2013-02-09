@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 
-urlpatterns = patterns('tracker.views', 
+urlpatterns = patterns('leave_tracker.views', 
     url(r'^$', 'index', name='index'),
     url(r'^apply/$', 'apply', name='apply'),                   
     url(r'^all/$', 'all', name='all'),                   

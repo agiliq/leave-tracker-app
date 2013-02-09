@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Leave, UserProfile, LeaveApplication
+from .models import Leave, UserProfile, LeaveApplication
 
 class LeaveAppAdmin(admin.ModelAdmin):
     list_display = ['start_date', 'end_date', 'usr', 'leave', 'status', 'subject']
