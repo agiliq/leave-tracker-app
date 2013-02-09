@@ -1,5 +1,5 @@
 """
-WSGI config for leave_tracker_app project.
+WSGI config for leaves project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -15,7 +15,7 @@ framework.
 """
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "leave_tracker_app.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "leaves.settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION

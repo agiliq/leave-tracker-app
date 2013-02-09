@@ -95,10 +95,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'leave_tracker_app.urls'
+ROOT_URLCONF = 'leaves.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'leave_tracker_app.wsgi.application'
+WSGI_APPLICATION = 'leaves.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates'),
