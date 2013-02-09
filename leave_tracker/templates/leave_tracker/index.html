@@ -1,19 +1,36 @@
 {% extends "leave_tracker/base.html" %}
+
+{% load url from future %}
+
 {% block content %}
 
 {% if user.is_authenticated %}
 
 <h2> Hey {{ current_user.user_display }} Welcome!</h2>
-<h3>You have exhausted {{ current_user.leaves_taken }} 
+<h3>You have exhausted {{ current_user.leaves_taken }}
 out of {{ current_user.total_leaves }} leaves.</h3>
+<p>
+    <div class="btn-group">
+      <a class="btn btn-large" href="{% url 'apply' %}">Request a leave</a>
+      <a class="btn btn-large" href="{% url 'personal' %}">View your leaves</a>
+      {% if user.is_superuser %}
+        <a class="btn btn-large" href="{% url 'all' %}">All the Leaves</a>
+      {% endif %}
+    </div>
+</p>
 
-{% endif %}<p> 
-<p> Click on any of the links in the nav bar! </p>
+
+
+{% else %}
+
+  <a class="btn btn-large" href="{% url 'openid-login' %}">Login</a>
+
+{% endif %}<p>
 
 
 {% if form %}
 
-<form method="POST" action""> 
+<form method="POST" action"">
   {% csrf_token %}
   <table>
     {% for field in form %}
@@ -30,7 +47,7 @@ out of {{ current_user.total_leaves }} leaves.</h3>
 
 
 {% endif %}
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" /> 
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css" type="text/css" media="all" />
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.5.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"></script>
 <script>

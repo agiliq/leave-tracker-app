@@ -22,7 +22,7 @@
         <div class="container">
           <!-- Be sure to leave the brand out there if you want it shown -->
           <a class="brand" href="/">Agiliq Leave Tracker</a>
-          
+
           <!-- Everything you want hidden at 940px or less, place within here -->
           <div class="nav-collapse">
             <ul class="nav">
@@ -32,7 +32,9 @@
               {% if user.is_authenticated %}
               <li><a href="{% url apply %}">Leave Request</a></li>
               <li><a href="{% url personal %}">Personal Leaves</a></li>
-              <li><a href="{% url all %}">All the Leaves</a></li>
+              {% if user.is_superuser %}
+                <li><a href="{% url all %}">All the Leaves</a></li>
+              {% endif %}
               <li><a href="{% url oidlogout %}">Logout</a></li>
               {% else %}
               <li><a href="{% url openid-login %}">Login</a></li>
@@ -40,7 +42,7 @@
             </ul>
             <!-- .nav, .navbar-search, .navbar-form, etc -->
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -51,8 +53,8 @@
       {% endblock content %}
     </div>
 
-    
-    
+
+
     <script src="{{ STATIC_URL }}js/script.js" ></script>
     {% block script %}
 
