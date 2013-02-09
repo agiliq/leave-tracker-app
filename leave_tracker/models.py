@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from django.db.models.signals import post_save, pre_save
 from django.core.mail import send_mail
 from django.conf import settings
+from django.template.loader import render_to_string
 
 
 class LeaveCategory(models.Model):
@@ -62,6 +63,11 @@ class LeaveApplication(models.Model):
     def __unicode__(self):
         return '%s %s' % (self.usr, self.start_date)
 
+    @property
+    def user(self):
+        return self.usr
+
+
 
 
 def send_approval_mail(sender, **kwargs):
@@ -69,12 +75,9 @@ def send_approval_mail(sender, **kwargs):
     recipients = \
         list(User.objects.filter(is_superuser=True).values_list('email'
              , flat=True))
-    subject = ''
-    email_body = \
-        """Starting %s 
-                  Ending %s
-                  %s""" \
-        % (instance.start_date, instance.end_date, instance.subject)
+    subject = None
+    email_body = render_to_string('leave_tracker/leave_created.txt',
+                    {"leave": instance})
     if kwargs['created']:
         subject = 'Leave Created by %s' % instance.usr.user
         recipients.append(instance.usr.user.email)

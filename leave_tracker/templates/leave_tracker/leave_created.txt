@@ -1,0 +1,5 @@
+Hello,
+
+{{ leave.user.user_display }} has requested a leave from {{ leave.start_date }} to {{ leave.end_date }}. 
+
+This is {{ leave.num_days }} days of leave. 

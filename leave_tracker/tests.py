@@ -72,7 +72,9 @@ class TestViewsBasic(TestCase):
 class TestModel(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="foo", email="foo@example.com",
-                    password="bar")
+                    password="bar",)
+        self.user.first_name = "Luke"
+        self.user.save()
         self.category = LeaveCategory.objects.create(type_of_leave="Personal", 
                         number_of_days=10)
         self.profile = UserProfile.objects.get(user=self.user)
@@ -91,6 +93,9 @@ class TestModel(TestCase):
         
         self.assertEqual(len(mail.outbox),
                 self.staff_count+1)#Mail goes to all staff, and user foo
+        last_email = mail.outbox[-1]
+        self.assertTrue(self.user.first_name in last_email.body)
+
 
     def test_leave_applications_approval(self):
         today=datetime.date.today()
