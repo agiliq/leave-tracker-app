@@ -3,7 +3,10 @@ from django.test import Client
 from django.contrib.auth.models import User
 from django.core import mail
 
+import datetime
+
 from .models import LeaveCategory, LeaveApplication, UserProfile
+from .admin import approve_multiple
 
 
 class TestViewsBasic(TestCase):
@@ -88,7 +91,6 @@ class TestModel(TestCase):
                 self.staff_count+1)#Mail goes to all staff, and user foo
 
     def test_leave_applications_approval(self):
-        import datetime
         today=datetime.date.today()
         tomorrow=datetime.date.today()+datetime.timedelta(1)
         data = {"start_date": today, "end_date": tomorrow,
@@ -100,5 +102,23 @@ class TestModel(TestCase):
         leave_application.status = True
         leave_application.save()
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
+
+    def test_admin_approve_multiple(self):
+        "The approve multiple admin action"
+        today=datetime.date.today()
+        tomorrow=datetime.date.today()+datetime.timedelta(1)
+        data = {"start_date": today, "end_date": tomorrow,
+                "leave_category": self.category, "subject": "Going to Timbaktu",
+                "usr": self.profile, "status": False
+            }
+        leave_application = LeaveApplication.objects.create(**data)
+        queryset = LeaveApplication.objects.filter(status=False)
+        old_count = len(mail.outbox)
+        approve_multiple(None, None, queryset)
+        self.assertEqual(LeaveApplication.objects.filter(status=False).count(), 0)
+        self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
+
+        
+
 
 
