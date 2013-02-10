@@ -2,5 +2,4 @@ dev.db
 *.pyc
 testdb
 local_settings.py
-migrations/
 *.*~
