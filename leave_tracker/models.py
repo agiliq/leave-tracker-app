@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 
 
 class LeaveCategory(models.Model):
-
+    "The type of leaves. Eg Casual leave, medical leave"
     type_of_leave = models.CharField(max_length=20)
     number_of_days = models.IntegerField(max_length=10)
 
@@ -21,7 +21,7 @@ class LeaveCategory(models.Model):
 
 
 class UserProfile(models.Model):
-
+    "Data we need for a user"
     user = models.OneToOneField(User)
     leaves_taken = models.PositiveIntegerField(max_length=10)
     total_leaves = models.PositiveIntegerField(max_length=10)
@@ -51,7 +51,7 @@ post_save.connect(create_user_profile, sender=User)
 
 
 class LeaveApplication(models.Model):
-
+    "A leave request"
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     usr = models.ForeignKey(UserProfile)
