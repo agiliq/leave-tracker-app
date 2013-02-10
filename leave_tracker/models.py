@@ -118,14 +118,11 @@ post_save.connect(modify_leave_count, sender=LeaveApplication)
 def change_username(sender, **kwargs):
     "Since we get username via openid, they can be duplicate"
     instance = kwargs['instance']
-    try:
-        User.objects.get(username=instance.username)
-        instance.username = "%s%s"%(instance.username, User.objects.filter(
-                                    username__startswith=instance.username).
-                                    count()+1)
-    except User.DoesNotExist:
-        pass
     if instance.username[0:6] == 'openid':
         instance.username = instance.email[0:-11]
+    count = User.objects.filter(username__startswith=instance.username)\
+            .exclude(pk=instance.pk).count()
+    if count:
+        instance.username = "%s%s" % (instance.username, count+1)
 
 pre_save.connect(change_username, sender=User)
