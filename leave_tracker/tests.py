@@ -165,3 +165,17 @@ class TestModel(TestCase):
         User.objects.create(username="dup", password="bar")
         self.assertEqual(User.objects.filter(username="dup").count(), 1)
         self.assertEqual(User.objects.filter(username="dup2").count(), 1)
+
+    def test_username_does_not_change(self):
+        "Username should not change on multiple logins"
+        c = Client()
+        u1 = User.objects.create_user(username="dup", password="bar")
+        c.login(username="dup", password="bar")
+        c.logout()
+        u2 = User.objects.create_user(username="dup", password="bar")
+        c.login(username="dup", password="bar")
+        c.logout()
+        c.login(username="dup2", password="bar")
+        c.logout()
+        self.assertEqual(User.objects.filter(username="dup").count(), 1)
+        self.assertEqual(User.objects.filter(username="dup2").count(), 1)

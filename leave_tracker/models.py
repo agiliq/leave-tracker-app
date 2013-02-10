@@ -120,9 +120,14 @@ def change_username(sender, **kwargs):
     instance = kwargs['instance']
     if instance.username[0:6] == 'openid':
         instance.username = instance.email[0:-11]
-    count = User.objects.filter(username__startswith=instance.username)\
-            .exclude(pk=instance.pk).count()
-    if count:
-        instance.username = "%s%s" % (instance.username, count+1)
+    "Taken from django_openid_auth"
+    i = 1
+    while True:
+        if i>1:
+            instance.username += str(i)
+        count = User.objects.filter(username__exact=instance.username).exclude(pk=instance.pk)
+        if not count:
+            break
+        i += 1
 
 pre_save.connect(change_username, sender=User)
