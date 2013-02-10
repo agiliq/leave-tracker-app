@@ -158,3 +158,10 @@ class TestModel(TestCase):
         self.assertEqual(LeaveApplication.objects.filter
                          (status=False).count(), 0)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
+
+    def test_duplicated_username(self):
+        "If you try to create two users with same username, it gets a suffix"
+        User.objects.create(username="dup", password="bar")
+        User.objects.create(username="dup", password="bar")
+        self.assertEqual(User.objects.filter(username="dup").count(), 1)
+        self.assertEqual(User.objects.filter(username="dup2").count(), 1)
