@@ -10,11 +10,11 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         db.rename_table("leave_tracker_leave", "leave_tracker_leavecategory")
-        db.rename_column("leave_tracker_leaveapplication", "leave", "leave_category")
+        db.rename_column("leave_tracker_leaveapplication", "leave_id", "leave_category_id")
 
     def backwards(self, orm):
         db.rename_table("leave_tracker_leavecategory", "leave_tracker_leave")
-        db.rename_column("leave_tracker_leaveapplication", "leave_category", "leave")
+        db.rename_column("leave_tracker_leaveapplication", "leave_category_id", "leave_id")
 
 
     models = {
