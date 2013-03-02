@@ -7,6 +7,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 
+from leave_tracker.jobs import send_reminder_mail_job
+
+from apscheduler.scheduler import Scheduler
+
 
 class LeaveCategory(models.Model):
     "The type of leaves. Eg Casual leave, medical leave"
@@ -110,9 +114,18 @@ def modify_leave_count(sender, **kwargs):
     UserProfile.objects.filter(user=instance.usr).\
         update(leaves_taken=leave_count)
 
+def send_reminder_mail(sender, **kwargs):
+    s = Scheduler()
+
+    start_date = kwargs['instance'].start_date.date()
+    s.add_date_job(send_reminder_mail_job, start_date,
+                   [kwargs['instance']])
+    s.start()
+
 
 post_save.connect(send_approval_mail, sender=LeaveApplication)
 post_save.connect(modify_leave_count, sender=LeaveApplication)
+post_save.connect(send_reminder_mail, sender=LeaveApplication)
 
 
 def change_username(sender, **kwargs):
