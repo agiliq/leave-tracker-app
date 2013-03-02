@@ -3,3 +3,4 @@ django-openid-auth
 -e git+https://github.com/adieu/python-openid#egg=python-openid
 south
 gunicorn
+APScheduler==2.1.0
