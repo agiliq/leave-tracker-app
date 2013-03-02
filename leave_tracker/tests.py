@@ -39,10 +39,12 @@ class TestViewsBasic(TestCase):
         self.c.login(username="foo", password="bar")
         cat = LeaveCategory.objects.create(type_of_leave="Personal",
                                            number_of_days=10)
-        data = {"start_date": "02/07/2013", "end_date": "02/07/2013",
+        start_date = datetime.datetime.now().date() + datetime.timedelta(1)
+        end_date = (start_date + datetime.timedelta(1))
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": cat.pk, "subject": "Going to Timbaktu"
                 }
-        self.c.post("/apply/", data)
+        r = self.c.post("/apply/", data)
         staff_count = User.objects.filter(is_staff=True).count()
         self.assertEqual(LeaveApplication.objects.get(subject=
                          "Going to Timbaktu").leave_category, cat)
@@ -81,9 +83,9 @@ class TestModel(TestCase):
         self.staff_count = User.objects.filter(is_staff=True).count()
 
     def test_create_leave_application(self):
-        today = datetime.date.today()
-        tomorrow = datetime.date.today()+datetime.timedelta(1)
-        data = {"start_date": today, "end_date": tomorrow,
+        start_date = datetime.datetime.now() + datetime.timedelta(1)
+        end_date = start_date+datetime.timedelta(1)
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": self.category, "subject":
                 "Going to Timbaktu",
                 "usr": self.profile, "status": False
@@ -101,18 +103,18 @@ class TestModel(TestCase):
         self.assertEqual(leave.status_display, "Requested")
 
     def test_leave_application_num_days(self):
-        today = datetime.date.today()
-        till = datetime.date.today()+datetime.timedelta(5)
-        data = {"start_date": today, "end_date": till,
+        start_date = datetime.datetime.now() + datetime.timedelta(1)
+        end_date = start_date+datetime.timedelta(1)
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": self.category, "subject":
                 "Going to Timbaktu",
                 "usr": self.profile, "status": False
                 }
         leave = LeaveApplication.objects.create(**data)
         #Dates are both inclusive
-        self.assertEqual(leave.num_days, 5+1)
-        till = datetime.date.today()+datetime.timedelta(10)
-        data = {"start_date": today, "end_date": till,
+        self.assertEqual(leave.num_days, 2)
+        end_date = start_date+datetime.timedelta(10)
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": self.category, "subject":
                 "Going to Timbaktu",
                 "usr": self.profile, "status": False
@@ -122,9 +124,9 @@ class TestModel(TestCase):
         self.assertEqual(leave.num_days, 10+1)
 
     def test_leave_applications_approval(self):
-        today = datetime.date.today()
-        tomorrow = datetime.date.today()+datetime.timedelta(1)
-        data = {"start_date": today, "end_date": tomorrow,
+        start_date = datetime.datetime.now() + datetime.timedelta(1)
+        end_date = start_date+datetime.timedelta(1)
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": self.category,
                 "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
@@ -144,9 +146,9 @@ class TestModel(TestCase):
 
     def test_admin_approve_multiple(self):
         "The approve multiple admin action"
-        today = datetime.date.today()
-        tomorrow = datetime.date.today()+datetime.timedelta(1)
-        data = {"start_date": today, "end_date": tomorrow,
+        start_date = datetime.datetime.now() + datetime.timedelta(1)
+        end_date = start_date+datetime.timedelta(1)
+        data = {"start_date": start_date, "end_date": end_date,
                 "leave_category": self.category,
                 "subject": "Going to Timbaktu",
                 "usr": self.profile, "status": False
