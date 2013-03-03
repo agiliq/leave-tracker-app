@@ -1,4 +1,4 @@
-django==1.4.3
+django==1.4.5
 django-openid-auth
 -e git+https://github.com/adieu/python-openid#egg=python-openid
 south
