@@ -11,7 +11,7 @@ from leave_tracker.jobs import send_reminder_mail_job
 
 from apscheduler.scheduler import Scheduler
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class LeaveCategory(models.Model):
@@ -108,9 +108,10 @@ def send_reminder_mail(sender, **kwargs):
     s = Scheduler()
 
     start_date = kwargs['instance'].start_date.date()
-    s.add_date_job(send_reminder_mail_job, start_date,
-                   [kwargs['instance']])
-    s.start()
+    if start_date > datetime.today().date():
+        s.add_date_job(send_reminder_mail_job, start_date,
+                    [kwargs['instance']])
+        s.start()
 
 
 post_save.connect(send_approval_mail, sender=LeaveApplication)
