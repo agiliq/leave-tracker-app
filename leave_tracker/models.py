@@ -11,6 +11,8 @@ from leave_tracker.jobs import send_reminder_mail_job
 
 from apscheduler.scheduler import Scheduler
 
+from datetime import timedelta
+
 
 class LeaveCategory(models.Model):
     "The type of leaves. Eg Casual leave, medical leave"
@@ -119,6 +121,21 @@ post_save.connect(send_approval_mail, sender=LeaveApplication)
 post_save.connect(send_reminder_mail, sender=LeaveApplication)
 
 
+def modify_num_of_days(sender, **kwargs):
+    "Calculate num_of_days from start_date, end_date excluding weekends"
+    holidays = settings.WEEKEND_HOLIDAYS
+    instance = kwargs['instance']
+    start = instance.start_date
+    end = instance.end_date
+    dg = (start + timedelta(x+1) for x in xrange((end-start).days))
+    s = sum(1 for day in dg if day.weekday()  not in holidays)
+    if start.weekday() < 5:
+        s += 1
+    instance.num_of_days = s
+
+
+
+
 def change_username(sender, **kwargs):
     "Since we get username via openid, they can be duplicate"
     instance = kwargs['instance']
@@ -135,3 +152,4 @@ def change_username(sender, **kwargs):
         i += 1
 
 pre_save.connect(change_username, sender=User)
+pre_save.connect(modify_num_of_days, sender=LeaveApplication)

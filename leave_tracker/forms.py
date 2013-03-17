@@ -11,7 +11,7 @@ class LeaveApplicationForm(ModelForm):
     class Meta:
 
         model = LeaveApplication
-        exclude = ('status', 'usr')
+        exclude = ('status', 'usr', 'num_of_days')
 
     def save(self, request, commit=True):
         model = super(LeaveApplicationForm, self).save(commit=False)
