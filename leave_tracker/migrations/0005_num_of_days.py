@@ -15,6 +15,7 @@ class Migration(DataMigration):
             start = leave.start_date
             end = leave.end_date
             dg = (start + timedelta(x+1) for x in xrange((end-start).days))
+            s = 0
             s = sum(1 for day in dg if day.weekday()  not in holidays)
             if start.weekday() < 5:
                 s += 1
