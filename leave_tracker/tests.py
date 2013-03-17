@@ -98,30 +98,9 @@ class TestModel(TestCase):
 
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
-        self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("requested" in last_email.body)
         self.assertEqual(leave.status_display, "Requested")
 
-    def test_leave_application_num_days(self):
-        start_date = datetime.datetime.now() + datetime.timedelta(1)
-        end_date = start_date+datetime.timedelta(1)
-        data = {"start_date": start_date, "end_date": end_date,
-                "leave_category": self.category, "subject":
-                "Going to Timbaktu",
-                "usr": self.profile, "status": False
-                }
-        leave = LeaveApplication.objects.create(**data)
-        #Dates are both inclusive
-        self.assertEqual(leave.num_days, 2)
-        end_date = start_date+datetime.timedelta(10)
-        data = {"start_date": start_date, "end_date": end_date,
-                "leave_category": self.category, "subject":
-                "Going to Timbaktu",
-                "usr": self.profile, "status": False
-                }
-        leave = LeaveApplication.objects.create(**data)
-        #Dates are both inclusive
-        self.assertEqual(leave.num_days, 10+1)
 
     def test_leave_applications_approval(self):
         start_date = datetime.datetime.now() + datetime.timedelta(1)
@@ -140,7 +119,6 @@ class TestModel(TestCase):
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
-        self.assertTrue(str(leave.num_days) in last_email.body)
         self.assertTrue("approved" in last_email.body)
         self.assertEqual(leave.status_display, "Approved")
 
