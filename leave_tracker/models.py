@@ -58,7 +58,7 @@ class LeaveApplication(models.Model):
     "A leave request"
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    num_of_days = models.IntegerField(null=True)
+    num_of_days = models.IntegerField()
     usr = models.ForeignKey(UserProfile)
     leave_category = models.ForeignKey("LeaveCategory")
     status = models.BooleanField()

@@ -192,3 +192,5 @@ TEMPLATE_DEBUG = DEBUG
 
 LEAVE_CONST = 20
 
+WEEKEND_HOLIDAYS = [5, 6]
+# Monday - 0, Sunday - 6.
