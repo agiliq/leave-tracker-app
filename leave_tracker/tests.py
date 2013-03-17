@@ -5,6 +5,7 @@ from django.core import mail
 from django.conf import settings
 
 import datetime
+from datetime import timedelta
 
 from .models import LeaveCategory, LeaveApplication, UserProfile
 from .admin import approve_multiple
@@ -100,6 +101,26 @@ class TestModel(TestCase):
         self.assertTrue(self.user.first_name in last_email.body)
         self.assertTrue("requested" in last_email.body)
         self.assertEqual(leave.status_display, "Requested")
+
+
+    def test_leave_applications_num_of_days(self):
+        start = datetime.datetime.now() + datetime.timedelta(1)
+        end = start+datetime.timedelta(10)
+        data = {"start_date": start, "end_date": end,
+                "leave_category": self.category, "subject":
+                "Going to Timbaktu",
+                "usr": self.profile, "status": False
+                }
+        leave = LeaveApplication.objects.create(**data)
+
+        holidays = settings.WEEKEND_HOLIDAYS
+        dg = (start + timedelta(x+1) for x in xrange((end-start).days))
+        s = sum(1 for day in dg if day.weekday()  not in holidays)
+        if start.weekday() < 5:
+            s += 1
+
+        self.assertEqual(leave.num_of_days, s)
+
 
 
     def test_leave_applications_approval(self):
