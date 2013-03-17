@@ -27,7 +27,6 @@ class LeaveCategory(models.Model):
 class UserProfile(models.Model):
     "Data we need for a user"
     user = models.OneToOneField(User)
-    leaves_taken = models.PositiveIntegerField(max_length=10)
     total_leaves = models.PositiveIntegerField(max_length=10)
 
     def __unicode__(self):
@@ -47,7 +46,7 @@ class UserProfile(models.Model):
 def create_user_profile(sender, **kwargs):
     instance = kwargs['instance']
     if kwargs['created']:
-        UserProfile.objects.create(user=instance, leaves_taken=0,
+        UserProfile.objects.create(user=instance,
                                    total_leaves=settings.LEAVE_CONST)
 
 
@@ -106,14 +105,6 @@ def send_approval_mail(sender, **kwargs):
                   fail_silently=False)
 
 
-def modify_leave_count(sender, **kwargs):
-    instance = kwargs['instance']
-    leaves = LeaveApplication.objects.filter(usr=instance.usr, status=True)
-    leave_count = 0
-    for key in leaves:
-        leave_count += (key.end_date - key.start_date).days + 1
-    UserProfile.objects.filter(user=instance.usr).\
-        update(leaves_taken=leave_count)
 
 def send_reminder_mail(sender, **kwargs):
     s = Scheduler()
@@ -125,7 +116,6 @@ def send_reminder_mail(sender, **kwargs):
 
 
 post_save.connect(send_approval_mail, sender=LeaveApplication)
-post_save.connect(modify_leave_count, sender=LeaveApplication)
 post_save.connect(send_reminder_mail, sender=LeaveApplication)
 
 
