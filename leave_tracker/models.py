@@ -72,10 +72,6 @@ class LeaveApplication(models.Model):
     def user(self):
         return self.usr
 
-    @property
-    def num_days(self):
-        "Number of days in this leave application"
-        return (self.end_date-self.start_date).days+1
 
     @property
     def status_display(self):
