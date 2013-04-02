@@ -2,4 +2,4 @@ Hello,
 
 {{ leave.user.user_display }} leave request has been approved. This leave is from {{ leave.start_date }} to {{ leave.end_date }}. 
 
-This is {{ leave.num_days }} days of leave. 
+This is {{ leave.num_of_days }} days of leave. 
