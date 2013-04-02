@@ -7,11 +7,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 
-from leave_tracker.jobs import send_reminder_mail_job
 
-from apscheduler.scheduler import Scheduler
-
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 
 class LeaveCategory(models.Model):
@@ -104,18 +101,7 @@ def send_approval_mail(sender, **kwargs):
 
 
 
-def send_reminder_mail(sender, **kwargs):
-    s = Scheduler()
-
-    start_date = kwargs['instance'].start_date.date()
-    if start_date > datetime.today().date():
-        s.add_date_job(send_reminder_mail_job, start_date,
-                    [kwargs['instance']])
-        s.start()
-
-
 post_save.connect(send_approval_mail, sender=LeaveApplication)
-post_save.connect(send_reminder_mail, sender=LeaveApplication)
 
 
 def modify_num_of_days(sender, **kwargs):
@@ -130,8 +116,6 @@ def modify_num_of_days(sender, **kwargs):
     if start.weekday() < 5:
         s += 1
     instance.num_of_days = s
-
-
 
 
 def change_username(sender, **kwargs):
