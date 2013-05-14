@@ -54,8 +54,8 @@ post_save.connect(create_user_profile, sender=User)
 
 class LeaveApplication(models.Model):
     "A leave request"
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     num_of_days = models.IntegerField()
     usr = models.ForeignKey(UserProfile)
     leave_category = models.ForeignKey("LeaveCategory")
@@ -101,7 +101,7 @@ def send_approval_mail(sender, **kwargs):
 
 
 
-post_save.connect(send_approval_mail, sender=LeaveApplication)
+#post_save.connect(send_approval_mail, sender=LeaveApplication)
 
 
 def modify_num_of_days(sender, **kwargs):
