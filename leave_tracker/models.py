@@ -101,7 +101,7 @@ def send_approval_mail(sender, **kwargs):
 
 
 
-#post_save.connect(send_approval_mail, sender=LeaveApplication)
+post_save.connect(send_approval_mail, sender=LeaveApplication)
 
 
 def modify_num_of_days(sender, **kwargs):
