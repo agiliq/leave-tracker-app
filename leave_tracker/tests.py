@@ -16,6 +16,9 @@ class TestViewsBasic(TestCase):
         self.user = User.objects.create_user(username="foo",
                                              email="foo@example.com",
                                              password="bar")
+        self.admin = User.objects.create_superuser(username="admin",
+                                             email="admin@example.com",
+                                             password="admin")
         self.c = Client()
 
     def test_index(self):
@@ -59,6 +62,9 @@ class TestViewsBasic(TestCase):
         response = self.c.get("/all/")
         self.assertEqual(302, response.status_code)
         self.c.login(username="foo", password="bar")
+        response = self.c.get("/all/")
+        self.assertEqual(404, response.status_code)
+        self.c.login(username="admin", password="admin")
         response = self.c.get("/all/")
         self.assertEqual(200, response.status_code)
 
