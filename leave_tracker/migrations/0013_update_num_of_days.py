@@ -1,21 +1,32 @@
 # -*- coding: utf-8 -*-
 import datetime
+from datetime import timedelta
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
+from django.conf import settings
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
+        "Write your forwards methods here."
+        # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
+        LeaveApplication = orm['leave_tracker.LeaveApplication']
+        leaves = LeaveApplication.objects.all()
+        holidays = settings.WEEKEND_HOLIDAYS
+        for leave in leaves:
 
-        # Changing field 'LeaveApplication.start_date'
-        db.alter_column('leave_tracker_leaveapplication', 'start_date', self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 5, 14).date()))
+            start = leave.start_date
+            end = leave.end_date
+            dg = (start + timedelta(x+1) for x in xrange((end-start).days))
+            s = sum(1 for day in dg if day.weekday()  not in holidays)
+            if start.weekday() < 5:
+                s += 1
+            leave.num_of_days = s
+            leave.save()
 
     def backwards(self, orm):
-
-        # Changing field 'LeaveApplication.start_date'
-        db.alter_column('leave_tracker_leaveapplication', 'start_date', self.gf('django.db.models.fields.DateField')(null=True))
+        "Write your backwards methods here."
 
     models = {
         'auth.group': {
@@ -56,7 +67,7 @@ class Migration(SchemaMigration):
         },
         'leave_tracker.leaveapplication': {
             'Meta': {'object_name': 'LeaveApplication'},
-            'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'end_date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'leave_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['leave_tracker.LeaveCategory']"}),
             'num_of_days': ('django.db.models.fields.IntegerField', [], {}),
@@ -80,3 +91,4 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['leave_tracker']
+    symmetrical = True

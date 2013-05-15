@@ -3,6 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
+import pytz
 
 class Migration(DataMigration):
 
@@ -12,8 +13,17 @@ class Migration(DataMigration):
         LeaveApplication = orm['leave_tracker.LeaveApplication']
         leaves = LeaveApplication.objects.all()
         for leave in leaves:
-            leave.start_date_new = leave.start_date.date()
-            leave.end_date_new = leave.end_date.date()
+
+            timezone = pytz.timezone('Asia/Kolkata')
+            start_date = leave.start_date.replace(tzinfo=pytz.utc)
+            end_date = leave.end_date.replace(tzinfo=pytz.utc)
+
+            leave.start_date_new = datetime.datetime.astimezone(
+                start_date, timezone
+            ).date()
+            leave.end_date_new = datetime.datetime.astimezone(
+                end_date, timezone
+            ).date()
 
             leave.save()
 

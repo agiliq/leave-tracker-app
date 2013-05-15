@@ -10,12 +10,18 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
 
         # Changing field 'LeaveApplication.end_date'
-        db.alter_column('leave_tracker_leaveapplication', 'end_date', self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 5, 14).date()))
+        db.alter_column('leave_tracker_leaveapplication', 'end_date', self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 5, 15).date()))
+
+        # Changing field 'LeaveApplication.start_date'
+        db.alter_column('leave_tracker_leaveapplication', 'start_date', self.gf('django.db.models.fields.DateField')(default=datetime.datetime(2013, 5, 15).date()))
 
     def backwards(self, orm):
 
         # Changing field 'LeaveApplication.end_date'
         db.alter_column('leave_tracker_leaveapplication', 'end_date', self.gf('django.db.models.fields.DateField')(null=True))
+
+        # Changing field 'LeaveApplication.start_date'
+        db.alter_column('leave_tracker_leaveapplication', 'start_date', self.gf('django.db.models.fields.DateField')(null=True))
 
     models = {
         'auth.group': {
