@@ -16,9 +16,7 @@ class TestViewsBasic(TestCase):
         self.user = User.objects.create_user(username="foo",
                                              email="foo@example.com",
                                              password="bar")
-        self.admin = User.objects.create_superuser(username="admin",
-                                             email="admin@example.com",
-                                             password="admin")
+
         self.c = Client()
 
     def test_index(self):
@@ -59,6 +57,9 @@ class TestViewsBasic(TestCase):
 
     def test_list_page(self):
         "All the leaves list page"
+        self.admin = User.objects.create_superuser(username="admin",
+                                             email="admin@example.com",
+                                             password="admin")
         response = self.c.get("/all/")
         self.assertEqual(302, response.status_code)
         self.c.login(username="foo", password="bar")
