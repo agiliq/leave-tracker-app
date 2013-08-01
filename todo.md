@@ -2,6 +2,7 @@
 * On the day of the leave, LeaveTracker should send a email to the Admin and User with the details of the leave.
 * Make the all leaves pages available to superuser only.
 * Add client side validations via Django parsley
+* Replace exclude with fields
 
 Done
 
