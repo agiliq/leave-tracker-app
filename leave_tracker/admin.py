@@ -14,6 +14,8 @@ approve_multiple.short_description = "Approve All"
 class LeaveAppAdmin(admin.ModelAdmin):
     list_display = ['start_date', 'end_date', 'usr', 'leave_category',
                     'status', 'subject']
+    list_filter = ["usr", "leave_category"]
+    date_hierarchy = "start_date"
     actions = [approve_multiple]
 
 
