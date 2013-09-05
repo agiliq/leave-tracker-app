@@ -3,11 +3,13 @@
 from django import forms
 from django.forms import ModelForm
 
+from parsley.decorators import parsleyfy
+
 from .models import LeaveApplication
 
 
+@parsleyfy
 class LeaveApplicationForm(ModelForm):
-
     class Meta:
 
         model = LeaveApplication

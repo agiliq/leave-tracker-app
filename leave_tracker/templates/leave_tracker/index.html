@@ -31,7 +31,7 @@ out of {{ current_user.total_leaves }} leaves.</h3>
 
 {% if form %}
 
-<form method="POST" action"">
+<form method="POST" action="" data-validate='parsley'>
   {% csrf_token %}
   <table>
     {% for field in form %}
