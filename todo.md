@@ -1,8 +1,7 @@
+Todo
+
 * Better test coverage
-* On the day of the leave, LeaveTracker should send a email to the Admin and User with the details of the leave.
-* Make the all leaves pages available to superuser only.
-* Add client side validations via Django parsley
-* Replace exclude with fields
+
 
 Done
 
@@ -15,4 +14,8 @@ Done
 * Move templates for the app inside the app, and namespace the templates
 * Rename Leave -> LeaveCategory
 * Rename app to leave_tracker
+* Add client side validations via Django parsley
+* On the day of the leave, LeaveTracker should send a email to the Admin and User with the details of the leave.
+* Make the all leaves pages available to superuser only.
+* Replace exclude with fields
 
