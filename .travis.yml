@@ -3,6 +3,11 @@ python:
   - "2.6"
   - "2.7"
 # command to install dependencies
-install: "pip install -r requirements.txt --use-mirrors"
+install:
+    - pip install -r requirements.txt --use-mirrors
+    - pip install coverage coveralls
+
 # command to run tests
-script: python manage.py test leave_tracker
+script: coverage run manage.py test leave_tracker
+
+after_success: coveralls
