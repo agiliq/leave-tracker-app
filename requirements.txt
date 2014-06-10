@@ -1,5 +1,5 @@
 Django==1.5.2
-MySQL-python==1.2.4
+MySQL-python==1.2.5
 South==0.8.2
 argparse==1.2.1
 django-openid-auth==0.5
