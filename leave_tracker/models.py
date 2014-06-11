@@ -79,9 +79,7 @@ class LeaveApplication(models.Model):
 
 def send_approval_mail(sender, **kwargs):
     instance = kwargs['instance']
-    recipients = \
-        list(User.objects.filter(is_superuser=True).
-             values_list('email', flat=True))
+    recipients = [settings.LEAVE_TRACKER_RECIPIENT]
     subject = None
 
     if kwargs['created']:
@@ -89,14 +87,14 @@ def send_approval_mail(sender, **kwargs):
                                       {"leave": instance})
         subject = 'Leave Created by %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
-        send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
+        send_mail(subject, email_body, settings.LEAVE_TRACKER_FROM_MAIL, recipients,
                   fail_silently=False)
     if instance.status:
         email_body = render_to_string('leave_tracker/leave_approved.txt',
                                       {"leave": instance})
         subject = 'Leave Approved for %s' % instance.usr.user
         recipients.append(instance.usr.user.email)
-        send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
+        send_mail(subject, email_body, settings.LEAVE_TRACKER_FROM_MAIL, recipients,
                   fail_silently=False)
 
 
