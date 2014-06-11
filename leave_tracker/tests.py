@@ -53,7 +53,7 @@ class TestViewsBasic(TestCase):
         #Mail goes to all staff, and user foo
         self.assertEqual(len(mail.outbox), staff_count+1)
         self.assertEqual(mail.outbox[-1].from_email,
-                         settings.DEFAULT_FROM_EMAIL)
+                         settings.LEAVE_TRACKER_FROM_MAIL)
 
     def test_list_page(self):
         "All the leaves list page"
@@ -143,7 +143,7 @@ class TestModel(TestCase):
         leave.status = True
         leave.save()
         self.assertEqual(mail.outbox[-1].from_email,
-                         settings.DEFAULT_FROM_EMAIL)
+                         settings.LEAVE_TRACKER_FROM_MAIL)
         self.assertEqual(len(mail.outbox), self.staff_count+old_count+1)
         last_email = mail.outbox[-1]
         self.assertTrue(self.user.first_name in last_email.body)
