@@ -9,9 +9,8 @@ MANAGERS = ADMINS
 PROJECT_DIR=os.path.dirname(__file__)
 
 SERVER_EMAIL = 'leaves@agiliq.com'
-DEFAULT_FROM_EMAIL = 'leaves@agiliq.com'
-
-
+LEAVE_TRACKER_FROM_MAIL = 'leaves@agiliq.com'
+LEAVE_TRACKER_RECIPIENT = 'shabda@agiliq.com'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
