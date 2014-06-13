@@ -59,7 +59,7 @@ class LeaveApplication(models.Model):
     num_of_days = models.IntegerField()
     usr = models.ForeignKey(UserProfile)
     leave_category = models.ForeignKey("LeaveCategory")
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
     subject = models.TextField()
 
     def __unicode__(self):
