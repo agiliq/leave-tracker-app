@@ -8,9 +8,9 @@ ADMINS = (
 MANAGERS = ADMINS
 PROJECT_DIR=os.path.dirname(__file__)
 
-SERVER_EMAIL = 'leaves@agiliq.com'
-LEAVE_TRACKER_FROM_MAIL = 'leaves@agiliq.com'
-LEAVE_TRACKER_RECIPIENT = 'shabda@agiliq.com'
+SERVER_EMAIL = 'yashwanthbabu.gujarathi@gmail.com'
+LEAVE_TRACKER_FROM_MAIL = 'yashwanthbabu.gujarathi@gmail.com'
+LEAVE_TRACKER_RECIPIENT = 'yashwanth@agiliq.com'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -51,7 +51,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = PROJECT_DIR+'/static'
+STATIC_ROOT = PROJECT_DIR+'/staticfiles'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -60,7 +60,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    #os.path.join(PROJECT_DIR,'static/'),
+    os.path.join(PROJECT_DIR,'static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -114,15 +114,17 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'leave_tracker',
-    'south',
-    'django_openid_auth',
     'django.contrib.admin',
+    'social.apps.django_app.default',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'django_openid_auth.auth.OpenIDBackend',
+    'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 # Should users be created when new OpenIDs are used to log in?
 OPENID_CREATE_USERS = True
@@ -193,3 +195,10 @@ LEAVE_CONST = 20
 
 WEEKEND_HOLIDAYS = [5, 6]
 # Monday - 0, Sunday - 6.
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

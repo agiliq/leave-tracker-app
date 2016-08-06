@@ -1,6 +1,5 @@
 {% extends "leave_tracker/base.html" %}
 
-{% load url from future %}
 {% load leave_tracker_tags %}
 
 {% block content %}
@@ -24,7 +23,7 @@ out of {{ current_user.total_leaves }} leaves.</h3>
 
 {% else %}
 
-  <a class="btn btn-large" href="{% url 'openid-login' %}">Login</a>
+ <li><a href="{% url 'login' %}">Login</a></li>
 
 {% endif %}<p>
 
