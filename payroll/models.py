@@ -48,11 +48,11 @@ class Skill(models.Model):
     """
     technology = models.CharField(name="Technology", max_length=256)
 
-    def __str__(self):
-        return self.technology
+    # def __str__(self):
+    #     return self.technology
 
 
-class Employee(UserProfile):
+class Employee(models.Model):
     """
     Stores Employee details
     """
@@ -70,27 +70,28 @@ class Employee(UserProfile):
         ('S', 'SINGLE'),
     )
 
+    user_profile = models.ForeignKey(UserProfile)
     employee_id = models.CharField(
         name="Employee ID", max_length=20, blank=False)
     gender = models.CharField(
         name="Gender", max_length=2, choices=GENDER_CHOICES, default=MALE)
-    date_of_birth = models.DateTimeField(name="Date of Birth", blank=True)
+    date_of_birth = models.DateTimeField(name="Date of Birth", blank=True, null=True)
     marital_status = models.CharField(
         name="Marital Status", max_length=2, choices=STATUS_CHOICES, default=SINGLE)
     address_1 = models.CharField(name="Address 1", max_length=256, blank=True)
     address_2 = models.CharField(name="Address 2", max_length=256, blank=True)
     country = CountryField(name="Country", blank=True)
-    zipcode = models.IntegerField(name="Zipcode", blank=True)
-    phone = models.IntegerField(name="Phone", blank=True)
+    zipcode = models.IntegerField(name="Zipcode", blank=True, null=True)
+    phone = models.IntegerField(name="Phone", blank=True,  null=True)
     alternate_phone = models.IntegerField(
-        name="Alternate Phone", blank=True)
+        name="Alternate Phone", blank=True, null=True)
 
     # Job Related fields
     department = models.ForeignKey(Department, blank=True, null=True)
     job_title = models.ForeignKey(Designation, blank=True, null=True)
     qualification = models.CharField(max_length=256, name="Qualification", blank=True)
     experience = models.IntegerField(
-        name="Experience", blank=True)
+        name="Experience", blank=True, null=True)
     skills = models.ManyToManyField(Skill, blank=True)
     resume = models.FileField(upload_to=user_directory_path, blank=True)
     profile_picture = models.ImageField(
@@ -99,7 +100,15 @@ class Employee(UserProfile):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "{0} {1} - {2}".format(self.user.first_name, self.user.last_name, self.job_title.name)
+        try:
+            job_title = self.job_title.name
+        except AttributeError:
+            job_title = ''
+
+        if job_title:
+            return "{0} {1} - {2}".format(self.user_profile.user.first_name, self.user_profile.user.last_name, self.job_title.name)
+        else:
+            return "{0} {1}".format(self.user_profile.user.first_name, self.user_profile.user.last_name)
 
     def get_employee_id(self):
         """
