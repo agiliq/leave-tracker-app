@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Employee, Payroll
+from .models import Employee, Payroll, Skill, Department
 
 
 @admin.register(Employee)
@@ -18,6 +18,16 @@ class PayrollAdmin(admin.ModelAdmin):
     # list_filter = ('employee__employee_id', 'account_number', 'gross_salary')
     search_fields = ['employee__employee_id', 'account_number', 'gross_salary']
     view_on_site = False
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'code']
+    view_on_site = False
+
+# @admin.register(Department)
+# class DepartmentAdmin(admin.ModelAdmin):
+#     search_fields = ['name', 'code']
+#     view_on_site = False
 
 # admin.site.register(Employee, EmployeeAdmin)
 # admin.site.register(Payroll, PayrollAdmin)

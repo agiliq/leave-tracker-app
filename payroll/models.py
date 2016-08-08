@@ -42,7 +42,7 @@ class Department(models.Model):
         return "{0}-{1}".format(self.code, self.name)
 
 
-class Skills(models.Model):
+class Skill(models.Model):
     """
     Stores Employee Skills
     """
@@ -91,7 +91,7 @@ class Employee(UserProfile):
     qualification = models.CharField(max_length=256, name="Qualification", blank=True)
     experience = models.IntegerField(
         name="Experience", blank=True)
-    skills = models.ManyToManyField(Skills, blank=True)
+    skills = models.ManyToManyField(Skill, blank=True)
     resume = models.FileField(upload_to=user_directory_path, blank=True)
     profile_picture = models.ImageField(
         upload_to=user_directory_path, blank=True)
