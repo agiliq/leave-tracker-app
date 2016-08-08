@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'leave_tracker',
+    'payroll',
     'django.contrib.admin',
     'social.apps.django_app.default',
 )
