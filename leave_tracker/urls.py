@@ -1,10 +1,12 @@
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns('leave_tracker.views',
-    url(r'^$', 'index', name='index'),
-    url(r'^apply/$', 'apply', name='apply'),
-    url(r'^all/$', 'all', name='all'),
-    url(r'^personal/$', 'personal', name='personal'),
-    url(r'^openid/logout/$', 'oidlogout', name='oidlogout'),
-    url(r'^get_prev_leaves/', 'get_prev_leaves', name='get_prev_leaves'),
-    )
+from leave_tracker import views
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^apply/$', views.apply, name='apply'),
+    url(r'^all/$', views.all, name='all'),
+    url(r'^personal/$', views.personal, name='personal'),
+    url(r'^openid/logout/$', views.oidlogout, name='oidlogout'),
+    url(r'^get_prev_leaves/', views.get_prev_leaves, name='get_prev_leaves'),
+    ]
