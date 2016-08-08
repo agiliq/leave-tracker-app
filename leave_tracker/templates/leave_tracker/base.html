@@ -4,7 +4,7 @@
     <title> Leave tracking app from/for  agiliq</title>
 
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel=s"tylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
     <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
@@ -37,7 +37,7 @@
               {% endif %}
               <li><a href="{% url 'oidlogout' %}">Logout</a></li>
               {% else %}
-              <li><a href="{% url 'openid-login' %}">Login</a></li>
+               <li><a href="{% url 'login' %}">Login</a></li>
               {% endif %}
             </ul>
             <!-- .nav, .navbar-search, .navbar-form, etc -->

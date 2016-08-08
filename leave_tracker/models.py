@@ -6,7 +6,7 @@ from django.db.models.signals import post_save, pre_save
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-
+from django.core.validators import MaxValueValidator
 
 from datetime import timedelta
 
@@ -14,7 +14,7 @@ from datetime import timedelta
 class LeaveCategory(models.Model):
     "The type of leaves. Eg Casual leave, medical leave"
     type_of_leave = models.CharField(max_length=20)
-    number_of_days = models.IntegerField(max_length=10)
+    number_of_days = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
 
     class Meta:
         verbose_name_plural = "Leave Categories"
@@ -26,7 +26,7 @@ class LeaveCategory(models.Model):
 class UserProfile(models.Model):
     "Data we need for a user"
     user = models.OneToOneField(User)
-    total_leaves = models.PositiveIntegerField(max_length=10)
+    total_leaves = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
 
     def __unicode__(self):
         return self.user.username
