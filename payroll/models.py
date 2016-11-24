@@ -1,11 +1,13 @@
 # Python Imports
 from __future__ import unicode_literals
+from decimal import Decimal
 
 # Django Imports
 from django.db import models
 
 # Third party Imports
 from django_countries.fields import CountryField
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Local Imports
 from leave_tracker.models import UserProfile
@@ -17,7 +19,7 @@ GENDER_CHOICES = (
 
 
 def user_directory_path(instance, filename):
-    return '{0}_{1}/{2}'.format(instance.user.first_name, instance.user.id, filename)
+    return '{0}_{1}/{2}'.format(instance.user_profile.user.first_name, instance.user_profile.user.id, filename)
 
 
 class Designation(models.Model):
@@ -28,7 +30,7 @@ class Designation(models.Model):
     title = models.CharField("Job Title", max_length=256)
 
     def __str__(self):
-        return "{0}-{1}".format(self.code, self.name)
+        return "{0}-{1}".format(self.code, self.title)
 
 
 class Department(models.Model):
@@ -70,7 +72,7 @@ class Employee(models.Model):
         ('S', 'SINGLE'),
     )
 
-    user_profile = models.ForeignKey(UserProfile)
+    user_profile = models.OneToOneField(UserProfile)
     employee_id = models.CharField(max_length=20, blank=False)
     gender = models.CharField(
         max_length=2, choices=GENDER_CHOICES, default=MALE)
@@ -81,8 +83,8 @@ class Employee(models.Model):
     address_2 = models.CharField(max_length=256, blank=True)
     country = CountryField(blank=True)
     zipcode = models.IntegerField(blank=True, null=True)
-    phone = models.IntegerField(blank=True,  null=True)
-    alternate_phone = models.IntegerField(blank=True, null=True)
+    phone = PhoneNumberField(blank=True)
+    alternate_phone = PhoneNumberField(blank=True)
 
     # Job Related fields
     department = models.ForeignKey(Department, blank=True, null=True)
@@ -90,11 +92,17 @@ class Employee(models.Model):
     qualification = models.CharField(max_length=256, blank=True)
     experience = models.IntegerField(blank=True, null=True)
     skills = models.ManyToManyField(Skill, blank=True)
+    personal_url = models.URLField(blank=True)
+    identity_proof = models.FileField(upload_to=user_directory_path, blank=True)
     resume = models.FileField(upload_to=user_directory_path, blank=True)
     profile_picture = models.ImageField(
         upload_to=user_directory_path, blank=True)
+    previous_company_name = models.CharField(max_length=256, blank=True)
+    # Can be used as Employee Joining date
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
+    # Can be used as Employee leaving date
+    to_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         try:
@@ -119,30 +127,43 @@ class Employee(models.Model):
         """
         return self.date_of_birth.strftime('%d, %b %Y')
 
+    class Meta:
+        get_latest_by = "-created_date"
+        ordering = ['-created_date']
+
 
 class Payroll(models.Model):
-    employee = models.ForeignKey(Employee)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     account_number = models.CharField(max_length=256)
     pan_number = models.CharField(max_length=30, blank=True)
     pf_number = models.CharField(
         "PF Account Number", max_length=50, blank=True)
-    gross_salary = models.DecimalField(max_digits=6, decimal_places=6)
+    gross_salary = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal('0.00'))
     basic = models.DecimalField(
-        "Basic Salary", max_digits=6, decimal_places=6)
-    hra = models.DecimalField("HRA", max_digits=6, decimal_places=6)
+        "Basic Salary", max_digits=8, decimal_places=2, default=Decimal('0.00'))
+    hra = models.DecimalField("HRA", max_digits=8, decimal_places=2, default=Decimal('0.00'))
     conveyance = models.DecimalField(
-        max_digits=6, decimal_places=6, blank=True)
-    medical = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
+    medical = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     flexible_benifits = models.DecimalField(
-        max_digits=6, decimal_places=6, blank=True)
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     pf_employee = models.DecimalField(
-        "PF from Employee", max_digits=6, decimal_places=6, blank=True)
+        "PF from Employee", max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     pf_employer = models.DecimalField(
-        "PF from Employer", max_digits=6, decimal_places=6, blank=True)
+        "PF from Employer", max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     income_tax = models.DecimalField(
-        max_digits=6, decimal_places=6, blank=True)
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     professional_tax = models.DecimalField(
-        max_digits=6, decimal_places=6, blank=True)
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
+    other_charges = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{0} - {1}".format(self.employee, self.gross_salary)
+
+    def get_net_salary(self):
+        deductions = self.income_tax + self.professional_tax + self.pf_employee + pf_employer + self.other_charges
+        gross_salary = self.gross_salary
+        net_salary = gross_salary - deductions
+        return net_salary
