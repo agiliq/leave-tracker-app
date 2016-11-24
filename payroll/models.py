@@ -24,8 +24,8 @@ class Designation(models.Model):
     """
     Stores Employee Designation / Job Title
     """
-    code = models.CharField(name="Designation Code", max_length=10)
-    name = models.CharField(name="Job Title", max_length=256)
+    code = models.CharField("Designation Code", max_length=10)
+    title = models.CharField("Job Title", max_length=256)
 
     def __str__(self):
         return "{0}-{1}".format(self.code, self.name)
@@ -35,8 +35,8 @@ class Department(models.Model):
     """
     Stores Employee Department
     """
-    code = models.CharField(name="Department Code", max_length=10)
-    name = models.CharField(name="Department Name", max_length=256)
+    code = models.CharField("Department Code", max_length=10)
+    name = models.CharField("Department Name", max_length=256)
 
     def __str__(self):
         return "{0}-{1}".format(self.code, self.name)
@@ -72,9 +72,11 @@ class Employee(models.Model):
 
     user_profile = models.ForeignKey(UserProfile)
     employee_id = models.CharField(max_length=20, blank=False)
-    gender = models.CharField( max_length=2, choices=GENDER_CHOICES, default=MALE)
+    gender = models.CharField(
+        max_length=2, choices=GENDER_CHOICES, default=MALE)
     date_of_birth = models.DateTimeField(blank=True, null=True)
-    marital_status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=SINGLE)
+    marital_status = models.CharField(
+        max_length=2, choices=STATUS_CHOICES, default=SINGLE)
     address_1 = models.CharField(max_length=256, blank=True)
     address_2 = models.CharField(max_length=256, blank=True)
     country = CountryField(blank=True)
@@ -96,12 +98,12 @@ class Employee(models.Model):
 
     def __str__(self):
         try:
-            job_title = self.job_title.name
+            job_title = self.job_title.title
         except AttributeError:
             job_title = ''
 
         if job_title:
-            return "{0} {1} - {2}".format(self.user_profile.user.first_name, self.user_profile.user.last_name, self.job_title.name)
+            return "{0} {1} - {2}".format(self.user_profile.user.first_name, self.user_profile.user.last_name, self.job_title.title)
         else:
             return "{0} {1}".format(self.user_profile.user.first_name, self.user_profile.user.last_name)
 
@@ -123,20 +125,24 @@ class Payroll(models.Model):
     account_number = models.CharField(max_length=256)
     pan_number = models.CharField(max_length=30, blank=True)
     pf_number = models.CharField(
-        name="PF Account Number", max_length=50, blank=True)
+        "PF Account Number", max_length=50, blank=True)
     gross_salary = models.DecimalField(max_digits=6, decimal_places=6)
     basic = models.DecimalField(
-        name="Basic Salary", max_digits=6, decimal_places=6)
-    hra = models.DecimalField(name="HRA", max_digits=6, decimal_places=6)
-    conveyance = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
+        "Basic Salary", max_digits=6, decimal_places=6)
+    hra = models.DecimalField("HRA", max_digits=6, decimal_places=6)
+    conveyance = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True)
     medical = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
-    flexible_benifits = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
+    flexible_benifits = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True)
     pf_employee = models.DecimalField(
-        name="PF from Employee", max_digits=6, decimal_places=6, blank=True)
+        "PF from Employee", max_digits=6, decimal_places=6, blank=True)
     pf_employer = models.DecimalField(
-        name="PF from Employer", max_digits=6, decimal_places=6, blank=True)
-    income_tax = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
-    professional_tax = models.DecimalField(max_digits=6, decimal_places=6, blank=True)
+        "PF from Employer", max_digits=6, decimal_places=6, blank=True)
+    income_tax = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True)
+    professional_tax = models.DecimalField(
+        max_digits=6, decimal_places=6, blank=True)
 
     def __str__(self):
         return "{0} - {1}".format(self.employee, self.gross_salary)
