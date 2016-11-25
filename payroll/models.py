@@ -163,7 +163,8 @@ class Payroll(models.Model):
         return "{0} - {1}".format(self.employee, self.gross_salary)
 
     def get_net_salary(self):
-        deductions = self.income_tax + self.professional_tax + self.pf_employee + pf_employer + self.other_charges
+        deductions = self.income_tax + self.professional_tax + self.pf_employee + self.pf_employer + self.other_charges
         gross_salary = self.gross_salary
         net_salary = gross_salary - deductions
         return net_salary
+    get_net_salary.short_description = 'Net Salary'
