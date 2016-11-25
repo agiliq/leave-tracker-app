@@ -17,35 +17,37 @@
   </head>
 
   <body>
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <!-- Be sure to leave the brand out there if you want it shown -->
-          <a class="brand" href="/">Agiliq Leave Tracker</a>
+    {% block navbar %}
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- Be sure to leave the brand out there if you want it shown -->
+            <a class="brand" href="/">Agiliq Leave Tracker</a>
 
-          <!-- Everything you want hidden at 940px or less, place within here -->
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="http://agiliq.com">Agiliq.com</a></li>
-              <li class="divider-vertical"></li>
-              {% if user.is_authenticated %}
-              <li><a href="{% url 'apply' %}">Leave Request</a></li>
-              <li><a href="{% url 'personal' %}">Personal Leaves</a></li>
-              {% if user.is_superuser %}
-                <li><a href="{% url 'all' %}">All the Leaves</a></li>
-              {% endif %}
-              <li><a href="{% url 'oidlogout' %}">Logout</a></li>
-              {% else %}
-               <li><a href="{% url 'login' %}">Login</a></li>
-              {% endif %}
-            </ul>
-            <!-- .nav, .navbar-search, .navbar-form, etc -->
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse">
+              <ul class="nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="http://agiliq.com">Agiliq.com</a></li>
+                <li class="divider-vertical"></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'apply' %}">Leave Request</a></li>
+                <li><a href="{% url 'personal' %}">Personal Leaves</a></li>
+                {% if user.is_superuser %}
+                  <li><a href="{% url 'all' %}">All the Leaves</a></li>
+                {% endif %}
+                <li><a href="{% url 'oidlogout' %}">Logout</a></li>
+                {% else %}
+                 <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+              </ul>
+              <!-- .nav, .navbar-search, .navbar-form, etc -->
+            </div>
+
           </div>
-
         </div>
       </div>
-    </div>
+    {% endblock navbar %}
 
 
     <div class="container">

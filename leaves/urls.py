@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url('google_auth/', include('social.apps.django_app.urls', namespace='social')),
     url('google_auth/login/google-oauth2/', django_app.views.auth, name='login'),
+    url(r'payroll', include('payroll.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

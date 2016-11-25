@@ -1,6 +1,7 @@
 # Django imports
 from django.contrib import admin
 from django.http import HttpResponse
+from django.template import Template, Context
 
 # Local imports
 from .models import Employee, Payroll, Skill, Department, Designation
@@ -8,6 +9,7 @@ from .models import Employee, Payroll, Skill, Department, Designation
 # Third party imports
 from reportlab.pdfgen import canvas
 from io import BytesIO
+import pdfcrowd
 
 @admin.register(Designation)
 class DesignationAdmin(admin.ModelAdmin):
@@ -60,14 +62,27 @@ class PayrollAdmin(admin.ModelAdmin):
     def send_payslips(self, request, queryset):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="payslip.pdf"'
-        buffer = BytesIO()
-        pdf = canvas.Canvas(buffer)
-        pdf.drawString(100, 100, "Hello world.")
-        pdf.showPage()
-        pdf.save()
-        pdf = buffer.getvalue()
-        buffer.close()
+        t = Template(open('/Users/shivakrishna/shiva/Office_projects/agiliq/leave-tracker-app/payroll/templates/payroll/payroll.html', 'rb').read())
+        c = Context({"name": ""})
+        html = t.render(c)
+
+        try:
+            client = pdfcrowd.Client("shiva_krishna", "979762185e2cdb2f3d6a1a3b3a122ecf")
+            pdf = client.convertHtml(html.encode("utf-8"))
+        except pdfcrowd.Error, why:
+            response = HttpResponse(mimetype="text/plain")
+            response.write(why)
+
+        # buffer = BytesIO()
+        # pdf = canvas.Canvas(buffer)
+        # pdf.drawString(100, 100, "Hello world.")
+        # pdf.showPage()
+        # pdf.save()
+        # pdf = buffer.getvalue()
+        # buffer.close()
+
         response.write(pdf)
+
         self.message_user(request, "Payslips sent to selected employees successfully.")
         return response
     send_payslips.short_description = "Send payslips to selected users"
