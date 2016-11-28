@@ -30,7 +30,7 @@ class Designation(models.Model):
     title = models.CharField("Job Title", max_length=256)
 
     def __str__(self):
-        return "{0}-{1}".format(self.code, self.title)
+        return "{0} - {1}".format(self.code, self.title)
 
 
 class Department(models.Model):
@@ -41,7 +41,7 @@ class Department(models.Model):
     name = models.CharField("Department Name", max_length=256)
 
     def __str__(self):
-        return "{0}-{1}".format(self.code, self.name)
+        return "{0} - {1}".format(self.code, self.name)
 
 
 class Skill(models.Model):
@@ -93,7 +93,8 @@ class Employee(models.Model):
     experience = models.IntegerField(blank=True, null=True)
     skills = models.ManyToManyField(Skill, blank=True)
     personal_url = models.URLField(blank=True)
-    identity_proof = models.FileField(upload_to=user_directory_path, blank=True)
+    identity_proof = models.FileField(
+        upload_to=user_directory_path, blank=True)
     resume = models.FileField(upload_to=user_directory_path, blank=True)
     profile_picture = models.ImageField(
         upload_to=user_directory_path, blank=True)
@@ -133,18 +134,21 @@ class Employee(models.Model):
 
 
 class Payroll(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.OneToOneField(Employee)
     account_number = models.CharField(max_length=256)
     pan_number = models.CharField(max_length=30, blank=True)
     pf_number = models.CharField(
         "PF Account Number", max_length=50, blank=True)
-    gross_salary = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal('0.00'))
+    gross_salary = models.DecimalField(
+        max_digits=8, decimal_places=2, default=Decimal('0.00'))
     basic = models.DecimalField(
         "Basic Salary", max_digits=8, decimal_places=2, default=Decimal('0.00'))
-    hra = models.DecimalField("HRA", max_digits=8, decimal_places=2, default=Decimal('0.00'))
+    hra = models.DecimalField(
+        "HRA", max_digits=8, decimal_places=2, default=Decimal('0.00'))
     conveyance = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
-    medical = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
+    medical = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     flexible_benifits = models.DecimalField(
         max_digits=8, decimal_places=2, blank=True, default=Decimal('0.00'))
     pf_employee = models.DecimalField(
@@ -163,8 +167,14 @@ class Payroll(models.Model):
         return "{0} - {1}".format(self.employee, self.gross_salary)
 
     def get_net_salary(self):
-        deductions = self.income_tax + self.professional_tax + self.pf_employee + self.pf_employer + self.other_charges
+        deductions = self.income_tax + self.professional_tax + \
+            self.pf_employee + self.pf_employer + self.other_charges
         gross_salary = self.gross_salary
         net_salary = gross_salary - deductions
         return net_salary
     get_net_salary.short_description = 'Net Salary'
+
+    def get_net_deductions(self):
+        net_deductions = self.other_charges + self.professional_tax + \
+            self.income_tax + self.pf_employer + self.pf_employee
+        return net_deductions

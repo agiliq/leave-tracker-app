@@ -17,7 +17,7 @@ class Command(BaseCommand):
         leaves = LeaveApplication.objects.filter(start_date=today)
         admin_recipients = \
             list(User.objects.filter(is_superuser=True).
-                values_list('email', flat=True))
+                 values_list('email', flat=True))
         for obj in leaves:
             subject = "Leave reminder for %s" % obj.usr
             email_body = """<p>This is a reminder email to notify that you have taken the
@@ -27,13 +27,9 @@ class Command(BaseCommand):
                         End Date : %s <br>
                         Status : %s <br>
                         Description : %s""" % \
-                        (str(obj.start_date)[:10], str(obj.end_date)[:10],
-                        obj.status_display, obj.subject)
+                (str(obj.start_date)[:10], str(obj.end_date)[:10],
+                 obj.status_display, obj.subject)
             recipients = admin_recipients
             recipients.append(obj.usr.user.email)
             send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, recipients,
-                    fail_silently=False)
-
-
-
-
+                      fail_silently=False)

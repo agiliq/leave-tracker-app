@@ -11,8 +11,3 @@ def leaves_taken(obj):
     leaves = LeaveApplication.objects.filter(usr=obj)
     leaves_taken = leaves.aggregate(Sum('num_of_days'))['num_of_days__sum']
     return leaves_taken
-
-
-
-
-

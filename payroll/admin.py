@@ -1,15 +1,10 @@
 # Django imports
 from django.contrib import admin
-from django.http import HttpResponse
-from django.template import Template, Context
+from django.conf import settings
 
 # Local imports
 from .models import Employee, Payroll, Skill, Department, Designation
-
-# Third party imports
-from reportlab.pdfgen import canvas
-from io import BytesIO
-import pdfcrowd
+from utils import get_payslip, send_an_email
 
 @admin.register(Designation)
 class DesignationAdmin(admin.ModelAdmin):
@@ -19,6 +14,7 @@ class DesignationAdmin(admin.ModelAdmin):
     view_on_site = False
     empty_value_display = '-empty-'
 
+
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')
@@ -27,22 +23,29 @@ class DepartmentAdmin(admin.ModelAdmin):
     view_on_site = False
     empty_value_display = '-empty-'
 
+
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ('employee_id', 'gender', 'marital_status',
+    list_display = ('employee_name', 'employee_id', 'gender', 'marital_status',
                     'job_title', 'date_of_birth', 'phone', 'created_date')
     list_filter = ('employee_id', 'phone')
-    search_fields = ['employee_id', 'user_profile__user__first_name', 'user_profile__user__last_name', 'user_profile__user__email', 'phone']
+    search_fields = ['employee_id', 'user_profile__user__first_name',
+                     'user_profile__user__last_name', 'user_profile__user__email', 'phone']
     view_on_site = False
     date_hierarchy = 'created_date'
     empty_value_display = '-empty-'
+
+    def employee_name(self, obj):
+        return "{0} {1}".format(obj.user_profile.user.first_name, obj.user_profile.user.last_name)
+    employee_name.short_description = 'Employee Name'
 
 
 @admin.register(Payroll)
 class PayrollAdmin(admin.ModelAdmin):
     list_display = ('employee', 'account_number', 'gross_salary', 'net_salary')
     list_filter = ('employee__employee_id', 'account_number')
-    search_fields = ['employee__user_profile__user__email', 'employee__user_profile__user__first_name', 'employee__user_profile__user__last_name', 'employee__employee_id', 'account_number', 'gross_salary']
+    search_fields = ['employee__user_profile__user__email', 'employee__user_profile__user__first_name',
+                     'employee__user_profile__user__last_name', 'employee__employee_id', 'account_number', 'gross_salary']
     view_on_site = False
     date_hierarchy = 'created_date'
     empty_value_display = '-empty-'
@@ -53,39 +56,31 @@ class PayrollAdmin(admin.ModelAdmin):
     actions = ['send_payslips']
 
     def net_salary(self, obj):
-        deductions = obj.income_tax + obj.professional_tax + obj.pf_employee + obj.pf_employer + obj.other_charges
+        deductions = obj.income_tax + obj.professional_tax + \
+            obj.pf_employee + obj.pf_employer + obj.other_charges
         gross_salary = obj.gross_salary
         net_salary = gross_salary - deductions
         return net_salary
     net_salary.short_description = 'Net Salary'
 
     def send_payslips(self, request, queryset):
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="payslip.pdf"'
-        t = Template(open('/Users/shivakrishna/shiva/Office_projects/agiliq/leave-tracker-app/payroll/templates/payroll/payroll.html', 'rb').read())
-        c = Context({"name": ""})
-        html = t.render(c)
+        subject = "Payslip for the month of "
+        message = """
+        Dear {0} {1},
 
-        try:
-            client = pdfcrowd.Client("shiva_krishna", "979762185e2cdb2f3d6a1a3b3a122ecf")
-            pdf = client.convertHtml(html.encode("utf-8"))
-        except pdfcrowd.Error, why:
-            response = HttpResponse(mimetype="text/plain")
-            response.write(why)
+        Please find the payslip attached to this mail.
 
-        # buffer = BytesIO()
-        # pdf = canvas.Canvas(buffer)
-        # pdf.drawString(100, 100, "Hello world.")
-        # pdf.showPage()
-        # pdf.save()
-        # pdf = buffer.getvalue()
-        # buffer.close()
-
-        response.write(pdf)
-
-        self.message_user(request, "Payslips sent to selected employees successfully.")
-        return response
+        Thank You,
+        Agiliq Team
+        """.format(request.user.first_name, request.user.last_name)
+        for payroll in queryset:
+            user_profile = payroll.employee.user_profile
+            payslip = get_payslip(user_profile)
+            send_an_email(subject, message, settings.LEAVE_TRACKER_RECIPIENT, [request.user.email], payslip)
+        self.message_user(
+            request, "Payslips sent to selected employees successfully.")
     send_payslips.short_description = "Send payslips to selected users"
+
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):

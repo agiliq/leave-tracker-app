@@ -9,4 +9,4 @@ urlpatterns = [
     url(r'^personal/$', views.personal, name='personal'),
     url(r'^openid/logout/$', views.oidlogout, name='oidlogout'),
     url(r'^get_prev_leaves/', views.get_prev_leaves, name='get_prev_leaves'),
-    ]
+]

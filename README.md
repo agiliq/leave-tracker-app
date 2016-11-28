@@ -1,15 +1,15 @@
-leave-tracker-app
-=================
+leave - tracker - app
+== == == == == == == == =
 
-[![Build Status](https://travis-ci.org/agiliq/leave-tracker-app.png?branch=master)](https://travis-ci.org/agiliq/leave-tracker-app)
-[![Coverage Status](https://coveralls.io/repos/agiliq/leave-tracker-app/badge.png)](https://coveralls.io/r/agiliq/leave-tracker-app)
+[![Build Status](https: // travis - ci.org / agiliq / leave - tracker - app.png?branch=master)](https: // travis - ci.org / agiliq / leave - tracker - app)
+[![Coverage Status](https: // coveralls.io / repos / agiliq / leave - tracker - app / badge.png)](https: // coveralls.io / r / agiliq / leave - tracker - app)
 
-### What is it?
+# What is it?
 
 Leave tracking system. All users can request leaves.
 Admins can grant leaves.
 
-###Features
+# Features
 
 1. There is a super admin to whom all the applications are
 directed, all leave data is visible to him.
@@ -23,6 +23,6 @@ and the remaining days.
 
 (See todo.md)
 
-### Installation
+# Installation
 
-1. pip install -r requirements.txt
+1. pip install - r requirements.txt

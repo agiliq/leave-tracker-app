@@ -24,7 +24,7 @@ body {
 <table align="center">
 	<tr>
 		<td style="text-align:center; border: 1px solid black; width:50%">
-			<img src="{{ STATIC_URL }}img/agiliq.png" alt="Smiley face" width="220">
+			<img src="{{ STATIC_URL }}img/agiliq.png" alt="Agiliq" width="220">
 		</td>
 		<td style="text-align:center; border: 1px solid black; width:50%">
 			Agiliq Info Solutions India Pvt Ltd,<br>
@@ -39,37 +39,37 @@ body {
 <table align="center">
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold; width:20%">Employee Name</td>
-		<td style="height: 20px; text-align:left; width:25%;">Shiva Krishna</td>
+		<td style="height: 20px; text-align:left; width:25%;">{{user_profile.user.first_name }} {{ user_profile.user.last_name }}</td>
 		<td style="height: 20px; text-align:center; font-weight: bold;  width:20%;">Designation</td>
-		<td style="height: 20px; text-align:left; width:35%;">Senior Software Engineer</td>
+		<td style="height: 20px; text-align:left; width:35%;">{{ user_profile.employee.job_title.title }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Employee Id</td>
-		<td style="height: 20px; text-align:left;">6545</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.employee_id }}</td>
 		<td style="height: 20px; text-align:center; font-weight: bold;">Address</td>
-		<td style="height: 20px; text-align:left;">Plot No:43E 38W, Road No No 7, Gandhi Nagar South, Vanasthalipuram, Hyderabad, 500070</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.address_1 }}, {{ user_profile.employee.address_2 }}, {{user_profile.employee.country}}, {{user_profile.employee.zipcode}}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Date of Joining</td>
-		<td style="height: 20px; text-align:left;">12/02/2016</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.created_date.date }}</td>
 		<td style="height: 20px; text-align:left;"></td>
 		<td style="height: 20px; text-align:left;"></td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Bank A/c No.</td>
-		<td style="height: 20px; text-align:left;">6546546545456</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.account_number }}</td>
 		<td style="height: 20px; text-align:left;"></td>
 		<td style="height: 20px; text-align:left;"></td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PAN No.</td>
-		<td style="height: 20px; text-align:left;">646465456</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pan_number }}</td>
 		<td style="height: 20px; text-align:left;"></td>
 		<td style="height: 20px; text-align:left;"></td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PF Account No.</td>
-		<td style="height: 20px; text-align:left;">5465465465</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pf_number }}</td>
 		<td style="height: 20px; text-align:left;"></td>
 		<td style="height: 20px; text-align:left;"></td>
 	</tr>
@@ -79,52 +79,52 @@ body {
 
 <table align="center">
 	<tr>
-		<td style="height: 20px; text-align:center; font-weight: bold;width:">GROSS EARNINGS (IN Rs.)</td>
+		<td style="height: 20px; text-align:center; font-weight: bold;">GROSS EARNINGS (IN Rs.)</td>
 		<td></td>
 		<td style="height: 20px; text-align:center; font-weight: bold;">DEDUCTIONS (IN Rs.)</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold; width:30%;">Basic</td>
-		<td style="height: 20px; text-align:left;width:20%;">19,000</td>
+		<td style="height: 20px; text-align:left;width:20%;">{{ user_profile.employee.payroll.basic }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;width:30%;">Income Tax</td>
-		<td style="height: 20px; text-align:left;width:20%;">19,000</td>
+		<td style="height: 20px; text-align:left;width:20%;">{{ user_profile.employee.payroll.income_tax }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">HRA</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.hra }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Profession Tax</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.professional_tax }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Flexible Benefits</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.flexible_benifits }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PF from Employee</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pf_employee }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Net Total</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.gross_salary }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PF from Employer</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pf_employer }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PF from Employee</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pf_employee }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Other</td>
-		<td style="height: 20px; text-align:left;">19,000</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.other_charges }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">PF from Employer</td>
-		<td style="height: 20px; text-align:left;">650.00</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.pf_employer }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Net Deductions</td>
-		<td style="height: 20px; text-align:left;">150.00</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.get_net_deductions }}</td>
 	</tr>
 	<tr>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Gross</td>
-		<td style="height: 20px; text-align:left;">18,000.00</td>
+		<td style="height: 20px; text-align:left;">{{ user_profile.employee.payroll.gross_salary }}</td>
 		<td style="height: 20px; text-align:left; font-weight: bold;">Net Salary</td>
-		<td style="height: 20px; text-align:left;">17,850.00</td>
+		<td style="height: 20px; text-align:left; border: 1px solid black;">{{ user_profile.employee.payroll.get_net_salary }}</td>
 	</tr>	
 </table>
 
@@ -133,13 +133,13 @@ body {
 <table>
 	<tr>
 		<td style="height: 40px; text-align:center; font-weight: bold; width:50%">IT deducted as on date (in Rs.)</td>
-		<td style="height: 40px; text-align:center; width:50%">65</td>
+		<td style="height: 40px; text-align:center; width:50%">{{0.0}}</td>
 	</tr>
 </table>
 
 <p style="text-align:center; padding-top:10px; padding-bottom:10px; font-weight: bold;"> DETAILS OF LEAVES </p>
 
-<table>
+<!--<table>
 	<tr>
 		<td style="height: 30px; text-align:center; font-weight: bold; width:50%">No. of working days in current month</td>
 		<td style="height: 30px; text-align:center; width:50%">21</td>
@@ -148,8 +148,8 @@ body {
 		<td style="height: 30px; text-align:center; font-weight: bold;">No. of days worked</td>
 		<td style="height: 30px; text-align:center;">19</td>
 	</tr>
-</table>
-<span style="">&nbsp;</spanß>
+</table> 
+<span style="">&nbsp;</span> -->
 <table>
 	<tr>
 		<td style="height: 30px; text-align:center; font-weight: bold;">Earned Leaves</td>
@@ -158,11 +158,11 @@ body {
 		<td style="height: 30px; text-align:center; font-weight: bold;">Leaves used till date</td>
 	</tr>
 	<tr>
-		<td style="height: 30px; text-align:center;">11</td>
+		<td style="height: 30px; text-align:center;">15</td>
 		<td style="height: 30px; text-align:center;">07</td>
 		<td style="height: 30px; text-align:center;">0</td>
-		<td style="height: 30px; text-align:center;">11</td>
+		<td style="height: 30px; text-align:center;">0</td>
 	</tr>
 </table>
-<p style="padding-top:15px;padding-bottom:15px">&nbsp;</p>
+<p style="padding-top:15px;padding-bottom:5px">&nbsp;</p>
 {% endblock content %}
