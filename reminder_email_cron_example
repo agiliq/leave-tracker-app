@@ -1,2 +1,2 @@
 # Runs reminder_email management command daily
-0 0 * * * root / path / to / python / path / to / manage.py reminder_email
+0 0 * * * root /path/to/python/path/to/manage.py reminder_email
