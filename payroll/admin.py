@@ -83,7 +83,7 @@ class PayrollAdmin(admin.ModelAdmin):
                           request.user.email], payslip)
         self.message_user(
             request, "Payslips sent to selected employees successfully.")
-    send_payslips.short_description = "Send payslips to selected users"
+    send_payslips.short_description = "Send payslip to selected users"
 
 
 @admin.register(Skill)
