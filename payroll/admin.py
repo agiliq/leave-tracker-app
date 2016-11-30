@@ -1,10 +1,12 @@
 # Django imports
 from django.contrib import admin
 from django.conf import settings
+from django.utils import timezone
 
 # Local imports
 from .models import Employee, Payroll, Skill, Department, Designation
 from utils import get_payslip, send_an_email
+
 
 @admin.register(Designation)
 class DesignationAdmin(admin.ModelAdmin):
@@ -64,19 +66,21 @@ class PayrollAdmin(admin.ModelAdmin):
     net_salary.short_description = 'Net Salary'
 
     def send_payslips(self, request, queryset):
-        subject = "Payslip for the month of "
+        subject = "Payslip for the month of {0}".format(
+            timezone.now().strftime("%B"))
         message = """
         Dear {0} {1},
 
-        Please find the payslip attached to this mail.
+        Please find the payslip for the month of {2} attached to this mail.
 
         Thank You,
         Agiliq Team
-        """.format(request.user.first_name, request.user.last_name)
+        """.format(request.user.first_name, request.user.last_name, timezone.now().strftime("%B"))
         for payroll in queryset:
             user_profile = payroll.employee.user_profile
             payslip = get_payslip(user_profile)
-            send_an_email(subject, message, settings.LEAVE_TRACKER_RECIPIENT, [request.user.email], payslip)
+            send_an_email(subject, message, settings.LEAVE_TRACKER_RECIPIENT, [
+                          request.user.email], payslip)
         self.message_user(
             request, "Payslips sent to selected employees successfully.")
     send_payslips.short_description = "Send payslips to selected users"
