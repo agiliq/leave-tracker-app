@@ -14,7 +14,8 @@ from datetime import timedelta
 class LeaveCategory(models.Model):
     "The type of leaves. Eg Casual leave, medical leave"
     type_of_leave = models.CharField(max_length=20)
-    number_of_days = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
+    number_of_days = models.PositiveIntegerField(
+        validators=[MaxValueValidator(9999999999)])
 
     class Meta:
         verbose_name_plural = "Leave Categories"
@@ -26,7 +27,8 @@ class LeaveCategory(models.Model):
 class UserProfile(models.Model):
     "Data we need for a user"
     user = models.OneToOneField(User)
-    total_leaves = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
+    total_leaves = models.PositiveIntegerField(
+        validators=[MaxValueValidator(9999999999)])
 
     def __unicode__(self):
         return self.user.username
@@ -69,13 +71,13 @@ class LeaveApplication(models.Model):
     def user(self):
         return self.usr
 
-
     @property
     def status_display(self):
         if self.status:
             return "Approved"
         else:
             return "Requested"
+
 
 def send_approval_mail(sender, **kwargs):
     instance = kwargs['instance']
@@ -107,8 +109,8 @@ def modify_num_of_days(sender, **kwargs):
     instance = kwargs['instance']
     start = instance.start_date
     end = instance.end_date
-    dg = (start + timedelta(x+1) for x in xrange((end-start).days))
-    s = sum(1 for day in dg if day.weekday()  not in holidays)
+    dg = (start + timedelta(x + 1) for x in xrange((end - start).days))
+    s = sum(1 for day in dg if day.weekday() not in holidays)
     if start.weekday() < 5:
         s += 1
     instance.num_of_days = s
@@ -122,9 +124,10 @@ def change_username(sender, **kwargs):
     "Taken from django_openid_auth"
     i = 1
     while True:
-        if i>1:
+        if i > 1:
             instance.username += str(i)
-        count = User.objects.filter(username__exact=instance.username).exclude(pk=instance.pk)
+        count = User.objects.filter(
+            username__exact=instance.username).exclude(pk=instance.pk)
         if not count:
             break
         i += 1

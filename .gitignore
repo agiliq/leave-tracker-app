@@ -1,5 +1,7 @@
 dev.db
+dev*.db
 *.pyc
 testdb
 local_settings.py
 *.*~
+.DS_store

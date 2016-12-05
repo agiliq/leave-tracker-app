@@ -10,6 +10,7 @@ from .models import LeaveApplication
 
 @parsleyfy
 class LeaveApplicationForm(ModelForm):
+
     class Meta:
 
         model = LeaveApplication

@@ -1,8 +1,8 @@
 leave-tracker-app
 =================
 
-[![Build Status](https://travis-ci.org/agiliq/leave-tracker-app.png?branch=master)](https://travis-ci.org/agiliq/leave-tracker-app)
-[![Coverage Status](https://coveralls.io/repos/agiliq/leave-tracker-app/badge.png)](https://coveralls.io/r/agiliq/leave-tracker-app)
+[![Build Status](https://travis-ci.org/agiliq/leave-tracker-app.png?branch=master)](https: //travis-ci.org/agiliq/leave-tracker-app)
+[![Coverage Status](https://coveralls.io/repos/agiliq/leave-tracker-app/badge.png)](https: //coveralls.io/r/agiliq/leave-tracker-app)
 
 ### What is it?
 

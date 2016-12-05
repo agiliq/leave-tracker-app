@@ -10,14 +10,13 @@ setup(
               ],
     package_dir={'leave_tracker': 'leave_tracker'},
     package_data={'leave_tracker': ['templates/*.html',
-                               'templates/leave_tracker/*.html',
-                               'templates/leave_tracker/*.txt',
-                               ]
-    },
+                                    'templates/leave_tracker/*.html',
+                                    'templates/leave_tracker/*.txt',
+                                    ]
+                  },
     author="Agiliq Solutions",
     author_email="hello@agiliq.com",
     description="A django based leave tracker",
-    long_description=
-    """
+    long_description="""
 Leave tracking system. All users can request leaves. Admins can grant leaves.
 """,)

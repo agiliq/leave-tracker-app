@@ -1,0 +1,10 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block submit_buttons_bottom %}
+    <div class="submit-row">
+       <input onclick="location.href='{% url 'generate_payslip' %}';" type="button" value="{% trans 'Generate Payslip' %}" name="_anotherbutton" />
+    </div>
+
+    {{ block.super }}
+{% endblock %}
